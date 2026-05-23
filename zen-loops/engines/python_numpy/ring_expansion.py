@@ -23,7 +23,8 @@ from dataclasses import dataclass, field
 import numpy as np
 from PIL import Image, ImageDraw
 
-from overlays.text_overlay import _load_font
+from engines.audio_reactive.collision_audio import MELODY_TITLES
+from overlays.text_overlay import _fit_font, _load_font, _text_size
 
 
 def _hex_to_rgb(s: str) -> tuple[int, int, int]:
@@ -90,7 +91,27 @@ class RingExpansionEngine:
         self.shockwaves: list[Shockwave] = []
         self.show_counter = cfg.get("counter", True)
 
+        reveal_pct = cfg.get("reveal_start_pct", 0.83)
+        self.reveal_start_frame = int(self.num_frames * reveal_pct)
+        explicit_reveal = cfg.get("reveal_text")
+        if explicit_reveal is None and cfg.get("reveal", True):
+            explicit_reveal = MELODY_TITLES.get(self.melody_name)
+        self.reveal_text = explicit_reveal
+
         self.counter_font = _load_font(54)
+        self.reveal_label_font = _load_font(110)
+        self.reveal_caption_font = _load_font(48)
+
+        rng_conf = random.Random(seed + 1)
+        self._confetti_seeds = [
+            (rng_conf.uniform(0, self.w), rng_conf.uniform(0, self.h * 0.55),
+             rng_conf.uniform(-1, 1), rng_conf.uniform(0.3, 1.6),
+             rng_conf.choice([
+                 (255, 90, 90), (90, 200, 255), (255, 220, 80),
+                 (180, 120, 255), (90, 255, 170), (255, 140, 60),
+             ]))
+            for _ in range(80)
+        ]
 
     def _current_ring_radius(self, i: int) -> float:
         t = i / max(self.num_frames - 1, 1)
@@ -164,7 +185,55 @@ class RingExpansionEngine:
                 stroke_fill="black",
             )
 
+        if self.reveal_text and i >= self.reveal_start_frame:
+            self._draw_reveal(img, draw, i)
+
         return img
+
+    def _draw_reveal(self, img: Image.Image, draw: ImageDraw.ImageDraw, i: int):
+        age = i - self.reveal_start_frame
+        total_reveal_frames = max(self.num_frames - self.reveal_start_frame, 1)
+        progress = min(age / max(total_reveal_frames * 0.4, 1), 1.0)
+        scrim_alpha = int(180 * progress)
+        scrim = Image.new("RGBA", img.size, (0, 0, 0, scrim_alpha))
+        img.paste(scrim, (0, 0), scrim)
+
+        for x0, y0, vx, vy, color in self._confetti_seeds:
+            t = age * 0.08
+            x = (x0 + vx * 240 * t) % self.w
+            y = (y0 + (vy * 70 + age * 6))
+            if y < 0 or y > self.h:
+                continue
+            r = 6
+            ImageDraw.Draw(img).ellipse([x - r, y - r, x + r, y + r], fill=color)
+
+        draw = ImageDraw.Draw(img)
+        caption = "It was"
+        cap_bbox = draw.textbbox((0, 0), caption, font=self.reveal_caption_font)
+        cap_w = cap_bbox[2] - cap_bbox[0]
+        cap_h = cap_bbox[3] - cap_bbox[1]
+        cy_caption = self.h // 2 - 90
+        draw.text(
+            ((self.w - cap_w) // 2, cy_caption),
+            caption,
+            font=self.reveal_caption_font,
+            fill="white",
+            stroke_width=2,
+            stroke_fill="black",
+        )
+
+        safe_w = int(self.w * 0.86)
+        title_font = _fit_font(self.reveal_text, safe_w, start_size=130, min_size=48)
+        tw, th = _text_size(draw, self.reveal_text, title_font)
+        cy_title = cy_caption + cap_h + 30
+        draw.text(
+            ((self.w - tw) // 2, cy_title),
+            self.reveal_text,
+            font=title_font,
+            fill="white",
+            stroke_width=5,
+            stroke_fill="black",
+        )
 
     def __iter__(self):
         for i in range(self.num_frames):

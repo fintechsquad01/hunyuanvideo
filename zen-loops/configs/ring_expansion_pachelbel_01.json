@@ -1,0 +1,22 @@
+{
+  "id": "ring_expansion_pachelbel_01",
+  "archetype": "ring_expansion",
+  "duration": 16,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a0a14",
+  "ring_color": "#3bff7a",
+  "ring_thickness": 18,
+  "ring_radius_start_pct": 0.45,
+  "ring_radius_end_pct": 0.95,
+  "ball_color": "#ff3b3b",
+  "ball_radius": 40,
+  "ball_speed": 1000,
+  "speed_gain_per_bounce": 1.007,
+  "melody": "pachelbel",
+  "counter": true,
+  "overlay": {
+    "hook_text": "Most miss this one.",
+    "cta_text": "Comment when you got it."
+  }
+}

@@ -56,11 +56,61 @@ MELODIES: dict[str, list[str]] = {
         "E4", "E4", "F4", "G4", "G4", "F4", "E4", "D4",
         "C4", "C4", "D4", "E4", "E4", "D4", "D4",
     ],
+    "fur_elise": [
+        "E5", "D#5", "E5", "D#5", "E5", "B4", "D5", "C5",
+        "A4", "C4", "E4", "A4", "B4", "E4", "G#4", "B4",
+    ],
+    "pachelbel": [
+        "D5", "C#5", "B4", "A4", "G4", "F#4", "G4", "A4",
+        "F#4", "E4", "D4", "C#4", "B3", "A3", "B3", "C#4",
+    ],
+    "greensleeves": [
+        "A4", "C5", "D5", "E5", "F5", "E5", "D5", "B4",
+        "G4", "A4", "B4", "C5", "B4", "A4", "G4", "E4",
+    ],
+    "frere_jacques": [
+        "C4", "D4", "E4", "C4", "C4", "D4", "E4", "C4",
+        "E4", "F4", "G4", "E4", "F4", "G4",
+    ],
+    "mary_had_lamb": [
+        "E4", "D4", "C4", "D4", "E4", "E4", "E4",
+        "D4", "D4", "D4", "E4", "G4", "G4",
+        "E4", "D4", "C4", "D4", "E4", "E4", "E4",
+    ],
+    "old_macdonald": [
+        "C4", "C4", "C4", "G3", "A3", "A3", "G3",
+        "E4", "E4", "D4", "D4", "C4",
+    ],
+    "amazing_grace": [
+        "D4", "G4", "B4", "G4", "B4", "A4", "G4", "E4", "D4",
+        "G4", "B4", "G4", "B4", "A4", "B4", "D5",
+    ],
+    "happy_birthday": [
+        "G4", "G4", "A4", "G4", "C5", "B4",
+        "G4", "G4", "A4", "G4", "D5", "C5",
+        "G4", "G4", "G5", "E5", "C5", "B4", "A4",
+        "F5", "F5", "E5", "C5", "D5", "C5",
+    ],
     "minor_arp": [
         "A3", "C4", "E4", "A4", "E4", "C4",
         "A3", "C4", "F4", "A4", "F4", "C4",
         "A3", "B3", "E4", "G4", "E4", "B3",
     ],
+}
+
+
+MELODY_TITLES: dict[str, str] = {
+    "twinkle": "Twinkle Twinkle",
+    "ode_to_joy": "Ode to Joy",
+    "fur_elise": "Für Elise",
+    "pachelbel": "Pachelbel's Canon",
+    "greensleeves": "Greensleeves",
+    "frere_jacques": "Frère Jacques",
+    "mary_had_lamb": "Mary Had a Little Lamb",
+    "old_macdonald": "Old MacDonald",
+    "amazing_grace": "Amazing Grace",
+    "happy_birthday": "Happy Birthday",
+    "minor_arp": "Minor Arpeggio",
 }
 
 

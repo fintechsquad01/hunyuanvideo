@@ -1,0 +1,22 @@
+{
+  "id": "ring_expansion_happybirthday_01",
+  "archetype": "ring_expansion",
+  "duration": 15,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a0a14",
+  "ring_color": "#ff8c1a",
+  "ring_thickness": 18,
+  "ring_radius_start_pct": 0.45,
+  "ring_radius_end_pct": 0.95,
+  "ball_color": "#3bcfff",
+  "ball_radius": 40,
+  "ball_speed": 1100,
+  "speed_gain_per_bounce": 1.008,
+  "melody": "happy_birthday",
+  "counter": true,
+  "overlay": {
+    "hook_text": "Someone's birthday is today.",
+    "cta_text": "Tag them if you guessed it."
+  }
+}
