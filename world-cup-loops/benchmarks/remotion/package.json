@@ -1,0 +1,15 @@
+{
+  "name": "pp-remotion-bench",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "render": "remotion render src/index.tsx Curacao out.mp4 --frames=0-419 --concurrency=4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/google-fonts": "^4.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "remotion": "^4.0.0"
+  }
+}

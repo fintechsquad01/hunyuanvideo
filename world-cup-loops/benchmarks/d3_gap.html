@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: 'Anton'; src: url('file:///home/user/hunyuanvideo/world-cup-loops/design/project/fonts/Anton-Regular.ttf') format('truetype'); font-display: block; }
+@font-face { font-family: 'Roboto Condensed'; font-weight: 700; src: url('file:///home/user/hunyuanvideo/world-cup-loops/design/project/fonts/RobotoCondensed-Bold.ttf') format('truetype'); font-display: block; }
+@font-face { font-family: 'Inter'; font-weight: 700; src: url('file:///usr/share/fonts/opentype/inter/Inter-Bold.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'Inter'; font-weight: 600; src: url('file:///usr/share/fonts/opentype/inter/Inter-SemiBold.otf') format('opentype'); font-display: block; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; }
+body {
+  background: linear-gradient(180deg, #0d2818 0%, #08180e 55%, #020a05 100%);
+  font-family: Inter, sans-serif;
+  color: #fff;
+  position: relative;
+}
+.watermark {
+  position: absolute; top: 28px; left: 28px;
+  font-family: Inter; font-weight: 700; font-size: 28px;
+  color: rgba(255,255,255,0.65); letter-spacing: -0.01em;
+}
+.half {
+  position: absolute; left: 0; right: 0;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+}
+.half.top { top: 0; height: 50%; }
+.half.bot { bottom: 0; height: 50%; flex-direction: column-reverse; padding-bottom: 64px; }
+.rank {
+  font-family: 'Roboto Condensed'; font-weight: 700; font-size: 32px;
+  color: #8aa195; letter-spacing: 0.08em;
+}
+.country {
+  font-family: 'Anton'; font-size: 140px; color: #fff;
+  letter-spacing: -0.03em; line-height: 0.95;
+  margin-top: 12px;
+}
+.flag {
+  width: 240px; height: 140px; border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.elo {
+  font-family: 'Anton'; font-size: 220px;
+  letter-spacing: -0.03em; line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 6px 32px rgba(0,0,0,0.7);
+}
+.top .flag { margin-top: 22px; }
+.top .elo { margin-top: 28px; color: #fff; }
+.bot .flag { margin-bottom: 22px; }
+.bot .elo { margin-bottom: 28px; color: #fff; }
+.divider {
+  position: absolute; top: 50%; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, #0f9d58, transparent);
+  opacity: 0.75; transform: translateY(-1px);
+}
+.gap-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.gap-card {
+  background: rgba(0,0,0,0.82);
+  padding: 56px 96px;
+  border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center;
+  box-shadow: 0 0 80px rgba(255,77,77,0.45), 0 12px 60px rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,77,77,0.35);
+}
+.gap-label-top, .gap-label-bot {
+  font-family: 'Anton'; color: #fff; letter-spacing: -0.02em;
+}
+.gap-label-top { font-size: 54px; margin-bottom: 12px; opacity: 0.92; }
+.gap-label-bot { font-size: 44px; margin-top: 12px; opacity: 0.92; }
+.gap-value {
+  font-family: 'Anton'; font-size: 320px; color: #ff4d4d;
+  letter-spacing: -0.05em; line-height: 0.9;
+  text-shadow: 0 0 40px rgba(255,77,77,0.7);
+}
+</style>
+</head>
+<body>
+<div class="watermark">pitch.predict</div>
+
+<div class="half top">
+  <div class="rank">#90 IN THE WORLD</div>
+  <div class="country">CURAÇAO</div>
+  <div class="flag" style="background:#0033a0"></div>
+  <div class="elo" id="cur">0</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="half bot">
+  <div class="rank">#11 IN THE WORLD · FIRST MATCH</div>
+  <div class="country">GERMANY</div>
+  <div class="flag" style="background:#cf142b"></div>
+  <div class="elo" id="ger">0</div>
+</div>
+
+<div class="gap-overlay" id="gap" style="display:none;">
+  <div class="gap-card">
+    <div class="gap-label-top">THE GAP</div>
+    <div class="gap-value">+487</div>
+    <div class="gap-label-bot">BIGGEST GAP IN WC HISTORY</div>
+  </div>
+</div>
+
+<script>
+const FPS = 30;
+const ELEMENTS_IN = 15;
+const PHASE1_END  = 45;
+const CUR_LOCK    = 51;
+const PHASE2_END  = 78;
+const GAP_REVEAL  = 80;
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const lerp  = (a, b, t) => a + (b - a) * t;
+const smooth = t => t*t*(3 - 2*t);
+
+window.renderFrame = function(frame) {
+  // Curaçao
+  let curVal = 0;
+  if (frame >= PHASE1_END) curVal = 1436;
+  else if (frame >= ELEMENTS_IN) {
+    const t = smooth(clamp((frame - ELEMENTS_IN) / (PHASE1_END - ELEMENTS_IN), 0, 1));
+    curVal = lerp(0, 1436, t);
+  }
+  const cur = document.getElementById('cur');
+  cur.textContent = Math.round(curVal);
+  cur.style.color = frame >= CUR_LOCK ? '#ffd400' : '#fff';
+
+  // Germany
+  let gerVal = 0;
+  if (frame >= PHASE2_END) gerVal = 1923;
+  else if (frame >= ELEMENTS_IN) {
+    if (frame < PHASE1_END) {
+      const t = smooth(clamp((frame - ELEMENTS_IN) / (PHASE1_END - ELEMENTS_IN), 0, 1));
+      gerVal = lerp(0, 1436, t);
+    } else {
+      const t = smooth(clamp((frame - PHASE1_END) / (PHASE2_END - PHASE1_END), 0, 1));
+      gerVal = lerp(1436, 1923, t);
+    }
+  }
+  const ger = document.getElementById('ger');
+  ger.textContent = Math.round(gerVal);
+  ger.style.color = frame >= PHASE2_END ? '#ff4d4d' : '#fff';
+
+  // Gap reveal — dim the underlying counters when the card appears
+  const gap = document.getElementById('gap');
+  const card = document.querySelector('.gap-card');
+  if (frame >= GAP_REVEAL) {
+    const fade = clamp((frame - GAP_REVEAL) / 8, 0, 1);
+    gap.style.display = 'flex';
+    gap.style.opacity = fade;
+    const s = clamp((frame - GAP_REVEAL) / 12, 0, 1);
+    card.style.transform = `scale(${lerp(0.85, 1, s)})`;
+    cur.style.opacity = 1 - fade * 0.7;
+    ger.style.opacity = 1 - fade * 0.7;
+  } else {
+    gap.style.display = 'none';
+    cur.style.opacity = 1;
+    ger.style.opacity = 1;
+  }
+
+  // Slide-in opacity
+  document.querySelector('.half.top').style.opacity = clamp(frame / 10, 0, 1);
+  document.querySelector('.half.bot').style.opacity = clamp((frame - 2) / 10, 0, 1);
+};
+
+window.renderFrame(0);
+</script>
+</body>
+</html>
