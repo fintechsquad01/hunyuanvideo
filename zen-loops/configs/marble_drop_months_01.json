@@ -1,0 +1,34 @@
+{
+  "id": "marble_drop_months_01",
+  "archetype": "marble_drop",
+  "duration": 15,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a0a14",
+  "labels": ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+  "palette": [
+    "#ff3b3b",
+    "#ff8c1a",
+    "#ffd93b",
+    "#a3ff3b",
+    "#3bff7a",
+    "#1dd3b0",
+    "#3bcfff",
+    "#3b83ff",
+    "#7a3bff",
+    "#c44dff",
+    "#ff3bc4",
+    "#ff6f91"
+  ],
+  "peg_rows": 14,
+  "peg_spacing": 95,
+  "gravity": 1800,
+  "marble_radius": 36,
+  "peg_radius": 9,
+  "bounce": 0.55,
+  "finish_y_pct": 0.92,
+  "overlay": {
+    "hook_text": "Your birth month is your racer.",
+    "cta_text": "Comment if yours won 👇"
+  }
+}
