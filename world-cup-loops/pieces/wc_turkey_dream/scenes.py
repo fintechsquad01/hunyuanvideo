@@ -24,6 +24,7 @@ class Scene:
     resolution: str = "1080p"
     negative_prompt: str = "Aerial view, aerial view, overexposed, low quality, deformation, a poor composition, bad hands, bad teeth, bad eyes, bad limbs, distortion"
     notes: str = ""
+    native_audio: bool = False  # hero scenes use veo3_1 (full) with native audio
 
 
 SCENES: list[Scene] = [
@@ -111,6 +112,8 @@ SCENES: list[Scene] = [
         id="s06_bosphorus",
         title="BOSPHORUS TRIUMPH",
         duration=6,
+        model="veo3_1",
+        native_audio=True,
         prompt=(
             "An ornate traditional Bosphorus passenger ferry painted red and white "
             "sails directly toward the camera at golden hour sunset, on its bow stands "
@@ -118,10 +121,49 @@ SCENES: list[Scene] = [
             "fans on deck wave Turkish flags, the iconic silhouette of historic "
             "domed mosques and minarets stands in the deep background, seagulls "
             "trail behind, water sparkles in warm sunset light. Slow heroic low-angle "
-            "tracking shot following the ferry. Style: epic cinematic photorealism. "
+            "tracking shot following the ferry. The ferry sounds a deep long horn "
+            "blast, seagulls cry overhead, water laps against the hull, distant "
+            "cheering carries across the water. Style: epic cinematic photorealism. "
             "Atmosphere: triumphant, ceremonial, civic pride."
         ),
-        notes="The 'parade' beat. Maximum cinematic scale.",
+        notes="HERO AUDIO. The 'parade' beat. Ferry horn + seagulls + crowd.",
+    ),
+    Scene(
+        id="s07b_unity",
+        title="DERBY DISSOLVES",
+        duration=5,
+        prompt=(
+            "Two adult Turkish football fans embrace in a packed stadium concourse "
+            "after the goal — one wears a vivid yellow and red striped scarf, the "
+            "other a navy blue and yellow striped scarf — historic club rivals now "
+            "tearfully hugging, both draped in identical large red Turkish national "
+            "flags with white crescent and star. Around them other fans in mixed "
+            "club colors raise fists and chant, all draped in the same national "
+            "flag. Warm stadium floodlights wash the crowd in golden light, confetti "
+            "drifts down through the air. Medium tracking shot pushing in toward the "
+            "embracing pair, shallow depth of field. Style: emotional cinematic "
+            "photorealism. Atmosphere: cathartic, brotherly, national pride dissolving "
+            "every other allegiance."
+        ),
+        notes="Club rivalry dissolves under national glory. Added per user request.",
+    ),
+    Scene(
+        id="s08b_simit",
+        title="SIMIT ASCENSION",
+        duration=5,
+        prompt=(
+            "A weathered Istanbul street vendor with a moustache and red knit cap "
+            "stands beside his red wooden simit cart on a cobblestone street at golden "
+            "hour. He grins widely, picks up one perfect sesame-crusted simit ring "
+            "from his cart, and tosses it gently upward into the air. As the simit "
+            "rises in slow motion against the warm sky, it slowly transforms — its "
+            "ring shape stretches and gleams — until it has become a small glowing "
+            "golden World Cup trophy, rotating gracefully above his upturned face. "
+            "Warm golden hour backlight, soft lens flares. Low-angle wide shot "
+            "following the simit's arc upward. Style: magical realism cinematic "
+            "photorealism. Atmosphere: playful surreal joy, fairytale wonder."
+        ),
+        notes="Simit-as-trophy. Added per user request. Iconic Turkish street-food beat.",
     ),
     Scene(
         id="s07_cats",
@@ -162,6 +204,8 @@ SCENES: list[Scene] = [
         id="s09_taksim",
         title="TAKSİM CHAOS",
         duration=6,
+        model="veo3_1",
+        native_audio=True,
         prompt=(
             "Aerial drone tracking shot flying low through a massive nighttime "
             "celebration in a wide European-style city square, an absolute sea of "
@@ -169,10 +213,12 @@ SCENES: list[Scene] = [
             "fireworks burst overhead in red and white showers, road flares pour "
             "smoke skyward, the historic stone facades of surrounding buildings "
             "glow under the lights. Fast drone tracking shot sweeping forward "
-            "through the crowd at fifteen meters elevation. Style: cinematic "
+            "through the crowd at fifteen meters elevation. A deafening unified "
+            "crowd roar fills the air, fireworks crack and boom overhead, distant "
+            "car horns and whistles weave through the celebration. Style: cinematic "
             "broadcast photorealism. Atmosphere: anthemic, ecstatic, nationally unified."
         ),
-        notes="The climax-frenzy beat. Maximum energy before the comedown.",
+        notes="HERO AUDIO. The climax-frenzy beat. Crowd roar + fireworks.",
     ),
     Scene(
         id="s10_wake",
