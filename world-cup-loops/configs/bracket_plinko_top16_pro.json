@@ -6,7 +6,7 @@
   "resolution": [1080, 1920],
   "background_top": "#0d2818",
   "background_bottom": "#020a05",
-  "supersample": 2,
+  "supersample": 1,
   "team_codes": ["ESP", "FRA", "ENG", "BRA", "ARG", "POR", "NED", "GER", "ITA", "BEL", "URU", "CRO", "USA", "MEX", "COL", "JPN"],
   "peg_rows": 16,
   "peg_spacing": 90,

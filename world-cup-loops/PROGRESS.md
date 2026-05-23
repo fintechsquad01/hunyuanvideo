@@ -30,6 +30,56 @@ Living document. Updated at the end of each working session.
 ### Pipeline
 - `generate_video.py --config configs/<name>.json` — reuses zen-loops engines via sys.path. Supports tournament-aware configs (`team_codes` field auto-resolves labels + flag colors from teams.json).
 
+## Supabase DB — sharpflow project (introspected 2026-05-23)
+
+Project ID: `nfmejklpxcquzxqyqewv` (org: iqcnilycoycialaddhzr)
+
+**Loaded and ready:**
+| Table | Rows | Use |
+|---|---|---|
+| soccer_standings_snapshot | 42,889 | Daily standings across leagues — powers "season recap race" |
+| soccer_team_form | 13,137 | Per-match form, streaks, attack/defense strength |
+| soccer_elo_ratings | 13,137 | Elo over time — bias for "known-result" races |
+| soccer_computed_features | 12,785 | Pre-computed ML features per match |
+| soccer_historical_matches | 6,569 | Full match records (FT/HT scores, xG, shots, etc.) |
+| soccer_odds_history | 2,040 | Historical odds for cross-reference |
+| soccer_national_teams | 48 | All WC qualifiers; has qualified_2026 + group_2026 fields |
+| soccer_leagues | 19 | League metadata + statistical fingerprints |
+| soccer_fixtures | 142 | Upcoming fixtures |
+
+**Coverage that's loaded (rich data):**
+- Premier League × 3 seasons (2023, 2024, 2025)
+- La Liga × 3 seasons
+- Serie A × 3 seasons
+- Bundesliga × 3 seasons
+- Eredivisie × 3 seasons
+- Turkish Super Lig × 4 seasons
+- Champions League × 3 seasons (groups + knockouts)
+- ~100+ daily standings snapshots per league per season
+
+**Schema set up but data NOT loaded (ingestion gap):**
+- All `WCQ-*` (qualifying competitions) — 0 rows
+- Europa League, Conference League — 0 rows
+- UEFA Nations League, CONCACAF Nations League — 0 rows
+- International Friendlies — 0 rows
+- FIFA World Cup itself — 0 rows (tournament hasn't started)
+
+**To fill the gap**: api-football.com Pro tier (~$50-100/mo) has every WCQ match. Ingestion script ~half day work to fill the empty tables.
+
+**Notable qualifier-2026 storylines from the DB:**
+- Norway qualified for the first time since 1998 (Haaland's first WC)
+- Cape Verde Islands qualified for the first time ever
+- 48 teams total, all confederations represented
+
+## Replaces my earlier teams.json placeholder
+
+The DB is now the source of truth for `soccer_national_teams`. My `data/teams.json` was wrong on these:
+- URY (not URU) is the correct Uruguay code
+- I was missing: BIH, CZE, NOR, SWE, CPV, COD, CUR, HAI, RSA
+- I had teams that didn't qualify: VEN, PER, NGA, DEN, POL
+
+Action: re-sync data/teams.json from `soccer_national_teams` before next render batch.
+
 ## What's NOT built yet
 
 - **WC3 Per-Match Score Race engine** — needs new linear-race engine; defer until tournament starts
