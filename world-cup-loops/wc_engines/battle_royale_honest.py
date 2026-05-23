@@ -243,8 +243,8 @@ class BattleRoyaleHonestEngine:
             dist = float(np.linalg.norm(offset))
             if dist > arena_r:
                 m.outside_frames += 1
-                # Soft push back if just slightly out — gives a chance to recover
-                if m.outside_frames < 12:
+                # Soft push back if just slightly out — gives a brief grace
+                if m.outside_frames < 6:
                     # Bounce-back impulse toward center
                     normal = offset / max(dist, 1e-6)
                     vn = float(np.dot(m.vel, normal))

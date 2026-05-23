@@ -1,6 +1,6 @@
 {
   "id": "wc_battle_48_honest",
-  "duration": 35,
+  "duration": 42,
   "fps": 30,
   "resolution": [1080, 1920],
   "bg_top": "#0d2818",
@@ -12,7 +12,7 @@
   "arena_cx": 540,
   "arena_cy": 1020,
   "arena_r_start": 470,
-  "arena_r_end": 75,
+  "arena_r_end": 32,
   "marble_min_radius": 16,
   "marble_max_radius": 34,
   "marble_min_speed": 110,
