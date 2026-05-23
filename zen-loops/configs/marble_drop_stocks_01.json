@@ -1,0 +1,32 @@
+{
+  "id": "marble_drop_stocks_01",
+  "archetype": "marble_drop",
+  "duration": 15,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a0a14",
+  "labels": ["AAPL", "MSFT", "NVDA", "GOOG", "AMZN", "META", "TSLA", "AMD", "NFLX", "AVGO"],
+  "palette": [
+    "#a3a3a3",
+    "#00a4ef",
+    "#76b900",
+    "#4285f4",
+    "#ff9900",
+    "#1877f2",
+    "#cc0000",
+    "#ed1c24",
+    "#e50914",
+    "#cc092f"
+  ],
+  "peg_rows": 14,
+  "peg_spacing": 95,
+  "gravity": 1800,
+  "marble_radius": 38,
+  "peg_radius": 9,
+  "bounce": 0.55,
+  "finish_y_pct": 0.92,
+  "overlay": {
+    "hook_text": "Your portfolio is your racer.",
+    "cta_text": "Did your bag win?"
+  }
+}

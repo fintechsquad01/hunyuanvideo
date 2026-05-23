@@ -1,0 +1,34 @@
+{
+  "id": "marble_drop_zodiac_01",
+  "archetype": "marble_drop",
+  "duration": 15,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a0a14",
+  "labels": ["ARI", "TAU", "GEM", "CAN", "LEO", "VIR", "LIB", "SCO", "SAG", "CAP", "AQU", "PIS"],
+  "palette": [
+    "#ff3b3b",
+    "#b88a4a",
+    "#ffd93b",
+    "#a3d8ff",
+    "#ff8c1a",
+    "#a3ff3b",
+    "#ff3bc4",
+    "#7a3bff",
+    "#ff6f91",
+    "#3b5a4a",
+    "#3bcfff",
+    "#1dd3b0"
+  ],
+  "peg_rows": 14,
+  "peg_spacing": 95,
+  "gravity": 1800,
+  "marble_radius": 36,
+  "peg_radius": 9,
+  "bounce": 0.55,
+  "finish_y_pct": 0.92,
+  "overlay": {
+    "hook_text": "Your zodiac sign is your racer.",
+    "cta_text": "Comment if yours won."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "marble_drop_worldcup_01",
+  "archetype": "marble_drop",
+  "duration": 16,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a0a14",
+  "labels": ["BRA", "ARG", "FRA", "GER", "ESP", "ITA", "ENG", "POR", "NED", "BEL", "URU", "USA"],
+  "palette": [
+    "#ffd400",
+    "#75aadb",
+    "#0055a4",
+    "#000000",
+    "#aa151b",
+    "#008c45",
+    "#cf142b",
+    "#006600",
+    "#ff6f00",
+    "#fdda24",
+    "#5cbfeb",
+    "#3c3b6e"
+  ],
+  "peg_rows": 14,
+  "peg_spacing": 95,
+  "gravity": 1800,
+  "marble_radius": 36,
+  "peg_radius": 9,
+  "bounce": 0.55,
+  "finish_y_pct": 0.92,
+  "overlay": {
+    "hook_text": "Pick your country.",
+    "cta_text": "Did your team win?"
+  }
+}
