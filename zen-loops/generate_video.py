@@ -28,12 +28,14 @@ sys.path.insert(0, str(REPO_ROOT))
 from engines.audio_reactive import collision_audio  # noqa: E402
 from engines.python_numpy.bouncing_spheres import BouncingSpheresEngine  # noqa: E402
 from engines.python_numpy.marble_drop import MarbleDropEngine  # noqa: E402
+from engines.python_numpy.marble_drop_pro import MarbleDropProEngine  # noqa: E402
 from engines.python_numpy.ring_expansion import RingExpansionEngine  # noqa: E402
 from overlays.text_overlay import apply_overlay  # noqa: E402
 
 ENGINES = {
     "bouncing_spheres": BouncingSpheresEngine,
     "marble_drop": MarbleDropEngine,
+    "marble_drop_pro": MarbleDropProEngine,
     "ring_expansion": RingExpansionEngine,
 }
 
