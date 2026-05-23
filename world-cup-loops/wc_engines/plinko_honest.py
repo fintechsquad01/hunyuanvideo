@@ -116,6 +116,7 @@ class PlinkoHonestEngine:
 
         rng = random.Random(seed)
         np_rng = np.random.default_rng(seed)
+        self.np_rng = np_rng  # store for use in step()
 
         n = len(teams)
         margin = max_r * 1.8
@@ -226,7 +227,7 @@ class PlinkoHonestEngine:
                         m.vel -= (1 + self.bounce) * vn * normal
                         # Slight tangent kick for asymmetry
                         tangent = np.array([-normal[1], normal[0]])
-                        m.vel += tangent * (np.random.uniform(-20, 20))
+                        m.vel += tangent * self.np_rng.uniform(-20, 20)
 
             # Finish line
             if m.pos[1] + m.radius >= self.finish_y and m.finished_frame is None:
