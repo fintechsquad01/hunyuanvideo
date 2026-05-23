@@ -3,3 +3,12 @@ output/*.png
 __pycache__/
 *.pyc
 .DS_Store
+
+# Manim build artifacts (Tex cache, intermediate images, etc.)
+media/
+
+# Playwright frame caches
+benchmarks/_d3_frames/
+
+# Remotion deps
+benchmarks/remotion/node_modules/
