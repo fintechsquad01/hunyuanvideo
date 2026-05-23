@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: 'Anton'; src: url('file:///home/user/hunyuanvideo/world-cup-loops/design/project/fonts/Anton-Regular.ttf') format('truetype'); font-display: block; }
+@font-face { font-family: 'Roboto Condensed'; font-weight: 700; src: url('file:///home/user/hunyuanvideo/world-cup-loops/design/project/fonts/RobotoCondensed-Bold.ttf') format('truetype'); font-display: block; }
+@font-face { font-family: 'Inter'; font-weight: 700; src: url('file:///usr/share/fonts/opentype/inter/Inter-Bold.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'Inter'; font-weight: 600; src: url('file:///usr/share/fonts/opentype/inter/Inter-SemiBold.otf') format('opentype'); font-display: block; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; font-family: Inter, sans-serif; color: #fff; }
+body { background: linear-gradient(180deg, #0d2818 0%, #08180e 55%, #020a05 100%); position: relative; }
+
+.watermark { position: absolute; top: 28px; left: 28px; font-family: Inter; font-weight: 700; font-size: 28px; color: rgba(255,255,255,0.6); letter-spacing: -0.01em; z-index: 100; }
+.round-chip { position: absolute; top: 28px; right: 28px; font-family: 'Roboto Condensed'; font-weight: 700; font-size: 24px; color: #fff; letter-spacing: 0.1em; background: #0f9d58; padding: 8px 16px; border-radius: 999px; z-index: 100; }
+
+/* --- Each shot is an .scene that we toggle via JS --- */
+.scene { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; padding: 0 48px; }
+.scene.active { display: flex; }
+
+/* SHOT 1 — HOOK */
+.s1-what-if { font-family: 'Anton'; font-size: 220px; color: #fff; letter-spacing: -0.04em; line-height: 0.9; margin-bottom: 32px; text-align: center; opacity: 0; }
+.s1-line1 { font-family: 'Inter'; font-weight: 700; font-size: 56px; color: #d9e6df; text-align: center; line-height: 1.15; opacity: 0; }
+.s1-line2 { font-family: 'Inter'; font-weight: 700; font-size: 56px; color: #d9e6df; text-align: center; line-height: 1.15; opacity: 0; }
+
+/* SHOT 2 — CURAÇAO SUBJECT */
+.s2-meet { font-family: 'Roboto Condensed'; font-weight: 700; font-size: 36px; color: #8aa195; letter-spacing: 0.15em; margin-bottom: 24px; opacity: 0; }
+.s2-country { font-family: 'Anton'; font-size: 220px; color: #fff; letter-spacing: -0.04em; line-height: 0.9; opacity: 0; }
+.s2-flag { width: 260px; height: 156px; background: #0033a0; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.15); margin: 32px 0; opacity: 0; }
+.s2-detail { font-family: 'Inter'; font-weight: 700; font-size: 48px; color: #fff; text-align: center; opacity: 0; }
+.s2-detail-sub { font-family: 'Inter'; font-weight: 600; font-size: 36px; color: #8aa195; text-align: center; margin-top: 8px; opacity: 0; }
+
+/* SHOT 3 — POPULATION CONTEXT */
+.s3-number { font-family: 'Anton'; font-size: 280px; color: #ffd400; letter-spacing: -0.04em; line-height: 0.9; opacity: 0; text-shadow: 0 0 40px rgba(255,212,0,0.4); }
+.s3-label { font-family: 'Anton'; font-size: 56px; color: #fff; letter-spacing: -0.02em; margin-top: 16px; opacity: 0; }
+.s3-compare { font-family: 'Inter'; font-weight: 700; font-size: 44px; color: #d9e6df; text-align: center; margin-top: 48px; line-height: 1.3; opacity: 0; }
+.s3-compare-highlight { color: #ff4d4d; }
+
+/* SHOT 4 — GERMANY OPPONENT */
+.s4-vs { font-family: 'Anton'; font-size: 64px; color: #ff4d4d; letter-spacing: 0.04em; margin-bottom: 24px; opacity: 0; }
+.s4-country { font-family: 'Anton'; font-size: 220px; color: #fff; letter-spacing: -0.04em; line-height: 0.9; opacity: 0; }
+.s4-flag { width: 260px; height: 156px; background: linear-gradient(180deg, #000 33%, #cf142b 33%, #cf142b 66%, #ffd400 66%); border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.15); margin: 32px 0; opacity: 0; }
+.s4-detail { font-family: 'Inter'; font-weight: 700; font-size: 48px; color: #fff; text-align: center; opacity: 0; }
+.s4-detail-sub { font-family: 'Inter'; font-weight: 600; font-size: 36px; color: #8aa195; text-align: center; margin-top: 8px; opacity: 0; }
+
+/* SHOT 5 — GAP REVEAL (split screen) */
+.s5-half { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.s5-half.top { top: 0; height: 50%; }
+.s5-half.bot { bottom: 0; height: 50%; flex-direction: column-reverse; padding-bottom: 80px; }
+.s5-rank { font-family: 'Roboto Condensed'; font-weight: 700; font-size: 32px; color: #8aa195; letter-spacing: 0.08em; }
+.s5-country { font-family: 'Anton'; font-size: 110px; color: #fff; letter-spacing: -0.03em; line-height: 0.95; margin-top: 8px; }
+.s5-flag { width: 200px; height: 116px; border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); margin-top: 16px; }
+.s5-half.bot .s5-flag { margin-bottom: 16px; }
+.s5-elo { font-family: 'Anton'; font-size: 200px; letter-spacing: -0.03em; line-height: 0.95; font-variant-numeric: tabular-nums; text-shadow: 0 6px 32px rgba(0,0,0,0.7); margin-top: 16px; }
+.s5-half.bot .s5-elo { margin-bottom: 16px; }
+.s5-divider { position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #0f9d58, transparent); opacity: 0.75; transform: translateY(-1px); }
+.s5-gap-card { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.85); background: rgba(0,0,0,0.85); padding: 56px 100px; border-radius: 14px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 80px rgba(255,77,77,0.45), 0 12px 60px rgba(0,0,0,0.7); border: 1px solid rgba(255,77,77,0.35); opacity: 0; }
+.s5-gap-label-top { font-family: 'Anton'; color: #fff; letter-spacing: -0.02em; font-size: 54px; margin-bottom: 12px; opacity: 0.92; }
+.s5-gap-value { font-family: 'Anton'; font-size: 320px; color: #ff4d4d; letter-spacing: -0.05em; line-height: 0.9; text-shadow: 0 0 40px rgba(255,77,77,0.7); }
+.s5-gap-label-bot { font-family: 'Anton'; color: #fff; letter-spacing: -0.02em; font-size: 44px; margin-top: 12px; opacity: 0.92; }
+
+/* SHOT 6 — PAYOFF */
+.s6-headline { font-family: 'Anton'; font-size: 180px; color: #fff; letter-spacing: -0.04em; line-height: 0.92; text-align: center; opacity: 0; text-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.s6-headline-line2 { color: #ffd400; }
+.s6-sub { font-family: 'Inter'; font-weight: 700; font-size: 48px; color: #d9e6df; text-align: center; margin-top: 32px; opacity: 0; }
+.s6-cta-band { position: absolute; bottom: 0; left: 0; right: 0; height: 7%; background: rgba(0,0,0,0.78); display: flex; align-items: center; justify-content: center; opacity: 0; }
+.s6-cta { font-family: 'Anton'; font-size: 52px; color: #ffd400; letter-spacing: -0.02em; }
+</style>
+</head>
+<body>
+
+<div class="watermark">pitch.predict</div>
+<div class="round-chip" id="round-chip">WC 2026 · GROUP C</div>
+
+<!-- SHOT 1 — HOOK (0:00 → 0:02) -->
+<div class="scene" id="shot1">
+  <div class="s1-what-if">WHAT IF</div>
+  <div class="s1-line1">the smallest country ever</div>
+  <div class="s1-line2">qualified for the World Cup?</div>
+</div>
+
+<!-- SHOT 2 — CURAÇAO SUBJECT (0:02 → 0:04) -->
+<div class="scene" id="shot2">
+  <div class="s2-meet">MEET</div>
+  <div class="s2-country">CURAÇAO</div>
+  <div class="s2-flag"></div>
+  <div class="s2-detail">Caribbean island.</div>
+  <div class="s2-detail-sub">First World Cup ever.</div>
+</div>
+
+<!-- SHOT 3 — POPULATION CONTEXT (0:04 → 0:07) -->
+<div class="scene" id="shot3">
+  <div class="s3-number">150,000</div>
+  <div class="s3-label">PEOPLE.</div>
+  <div class="s3-compare">
+    Smaller than <span class="s3-compare-highlight">MetLife Stadium</span><br/>can hold for the final.
+  </div>
+</div>
+
+<!-- SHOT 4 — GERMANY OPPONENT (0:07 → 0:09) -->
+<div class="scene" id="shot4">
+  <div class="s4-vs">FIRST MATCH:</div>
+  <div class="s4-country">GERMANY</div>
+  <div class="s4-flag"></div>
+  <div class="s4-detail">#11 in the world.</div>
+  <div class="s4-detail-sub">Four-time World Champions.</div>
+</div>
+
+<!-- SHOT 5 — GAP REVEAL (0:09 → 0:12) -->
+<div class="scene" id="shot5">
+  <div class="s5-half top">
+    <div class="s5-rank">#90 · CURAÇAO</div>
+    <div class="s5-flag" style="background:#0033a0; margin-top:24px"></div>
+    <div class="s5-elo" id="s5-cur">0</div>
+  </div>
+  <div class="s5-divider"></div>
+  <div class="s5-half bot">
+    <div class="s5-rank">#11 · GERMANY</div>
+    <div class="s5-flag" style="background:linear-gradient(180deg,#000 33%,#cf142b 33%,#cf142b 66%,#ffd400 66%); margin-bottom:24px"></div>
+    <div class="s5-elo" id="s5-ger">0</div>
+  </div>
+  <div class="s5-gap-card" id="s5-gap-card">
+    <div class="s5-gap-label-top">THE GAP</div>
+    <div class="s5-gap-value">+487</div>
+    <div class="s5-gap-label-bot">BIGGEST IN WC HISTORY</div>
+  </div>
+</div>
+
+<!-- SHOT 6 — PAYOFF (0:12 → 0:14) -->
+<div class="scene" id="shot6">
+  <div class="s6-headline">
+    SMALLER THAN<br/>
+    <span class="s6-headline-line2">THE STADIUM.</span>
+  </div>
+  <div class="s6-sub">Going to the World Cup anyway.</div>
+  <div class="s6-cta-band">
+    <div class="s6-cta">BACK CURAÇAO · JUNE 14</div>
+  </div>
+</div>
+
+<script>
+const FPS = 30;
+const TOTAL = 420; // 14s @ 30fps
+
+// Beat boundaries (in frames)
+const BEATS = {
+  s1_in:     0,   s1_text1:  6,  s1_text2: 14, s1_text3: 22, s1_out:   60,
+  s2_in:    60,   s2_meet:  62, s2_country: 66, s2_flag: 72, s2_detail: 78, s2_sub: 84, s2_out: 120,
+  s3_in:   120,   s3_number: 122, s3_label: 132, s3_compare: 144, s3_out: 210,
+  s4_in:   210,   s4_vs: 212, s4_country: 216, s4_flag: 222, s4_detail: 228, s4_sub: 234, s4_out: 270,
+  s5_in:   270,   s5_climb_start: 275, s5_phase1_end: 305, s5_lock: 311, s5_phase2_end: 335, s5_gap_in: 338, s5_out: 360,
+  s6_in:   360,   s6_headline: 362, s6_sub: 372, s6_cta: 380, s6_out: TOTAL
+};
+
+const clamp = (v,lo,hi) => Math.max(lo, Math.min(hi, v));
+const lerp = (a,b,t) => a + (b-a) * t;
+const smooth = t => t*t*(3 - 2*t);
+const fadeIn = (frame, start, dur) => clamp((frame - start) / dur, 0, 1);
+
+window.renderFrame = function(frame) {
+  // Show only the active scene
+  const scenes = ['shot1','shot2','shot3','shot4','shot5','shot6'];
+  const active =
+    frame < BEATS.s1_out ? 'shot1' :
+    frame < BEATS.s2_out ? 'shot2' :
+    frame < BEATS.s3_out ? 'shot3' :
+    frame < BEATS.s4_out ? 'shot4' :
+    frame < BEATS.s5_out ? 'shot5' :
+    'shot6';
+  scenes.forEach(s => {
+    document.getElementById(s).classList.toggle('active', s === active);
+  });
+
+  // Round chip — always visible except during gap card peak
+  const chip = document.getElementById('round-chip');
+  chip.style.opacity = (frame >= BEATS.s5_gap_in && frame < BEATS.s6_in) ? '0' : '0.85';
+
+  // ----- SHOT 1: WHAT IF? -----
+  if (active === 'shot1') {
+    document.querySelector('.s1-what-if').style.opacity = fadeIn(frame, BEATS.s1_text1, 6);
+    document.querySelector('.s1-line1').style.opacity = fadeIn(frame, BEATS.s1_text2, 8);
+    document.querySelector('.s1-line2').style.opacity = fadeIn(frame, BEATS.s1_text3, 8);
+  }
+
+  // ----- SHOT 2: CURAÇAO -----
+  if (active === 'shot2') {
+    document.querySelector('.s2-meet').style.opacity = fadeIn(frame, BEATS.s2_meet, 4);
+    document.querySelector('.s2-country').style.opacity = fadeIn(frame, BEATS.s2_country, 6);
+    document.querySelector('.s2-flag').style.opacity = fadeIn(frame, BEATS.s2_flag, 6);
+    document.querySelector('.s2-detail').style.opacity = fadeIn(frame, BEATS.s2_detail, 6);
+    document.querySelector('.s2-detail-sub').style.opacity = fadeIn(frame, BEATS.s2_sub, 6);
+  }
+
+  // ----- SHOT 3: POPULATION -----
+  if (active === 'shot3') {
+    const numEl = document.querySelector('.s3-number');
+    const numOpacity = fadeIn(frame, BEATS.s3_number, 8);
+    numEl.style.opacity = numOpacity;
+    // Number counts up from 0 → 150,000
+    const countT = smooth(clamp((frame - BEATS.s3_number) / 25, 0, 1));
+    const value = Math.round(lerp(0, 150000, countT));
+    numEl.textContent = value.toLocaleString('en-US');
+
+    document.querySelector('.s3-label').style.opacity = fadeIn(frame, BEATS.s3_label, 6);
+    document.querySelector('.s3-compare').style.opacity = fadeIn(frame, BEATS.s3_compare, 12);
+  }
+
+  // ----- SHOT 4: GERMANY -----
+  if (active === 'shot4') {
+    document.querySelector('.s4-vs').style.opacity = fadeIn(frame, BEATS.s4_vs, 4);
+    document.querySelector('.s4-country').style.opacity = fadeIn(frame, BEATS.s4_country, 6);
+    document.querySelector('.s4-flag').style.opacity = fadeIn(frame, BEATS.s4_flag, 6);
+    document.querySelector('.s4-detail').style.opacity = fadeIn(frame, BEATS.s4_detail, 6);
+    document.querySelector('.s4-detail-sub').style.opacity = fadeIn(frame, BEATS.s4_sub, 6);
+  }
+
+  // ----- SHOT 5: GAP REVEAL -----
+  if (active === 'shot5') {
+    // Phase 1: both climb to 1436 (CUR) / 1436 (GER)
+    let curVal = 0, gerVal = 0;
+    if (frame >= BEATS.s5_phase1_end) curVal = 1436;
+    else if (frame >= BEATS.s5_climb_start) {
+      const t = smooth(clamp((frame - BEATS.s5_climb_start) / (BEATS.s5_phase1_end - BEATS.s5_climb_start), 0, 1));
+      curVal = lerp(0, 1436, t);
+    }
+    if (frame >= BEATS.s5_phase2_end) gerVal = 1923;
+    else if (frame >= BEATS.s5_climb_start) {
+      if (frame < BEATS.s5_phase1_end) {
+        const t = smooth(clamp((frame - BEATS.s5_climb_start) / (BEATS.s5_phase1_end - BEATS.s5_climb_start), 0, 1));
+        gerVal = lerp(0, 1436, t);
+      } else {
+        const t = smooth(clamp((frame - BEATS.s5_phase1_end) / (BEATS.s5_phase2_end - BEATS.s5_phase1_end), 0, 1));
+        gerVal = lerp(1436, 1923, t);
+      }
+    }
+
+    const cur = document.getElementById('s5-cur');
+    cur.textContent = Math.round(curVal);
+    cur.style.color = frame >= BEATS.s5_lock ? '#ffd400' : '#fff';
+
+    const ger = document.getElementById('s5-ger');
+    ger.textContent = Math.round(gerVal);
+    ger.style.color = frame >= BEATS.s5_phase2_end ? '#ff4d4d' : '#fff';
+
+    // Gap card reveal
+    const card = document.getElementById('s5-gap-card');
+    if (frame >= BEATS.s5_gap_in) {
+      const fade = clamp((frame - BEATS.s5_gap_in) / 8, 0, 1);
+      const scaleT = clamp((frame - BEATS.s5_gap_in) / 12, 0, 1);
+      card.style.opacity = fade;
+      card.style.transform = `translate(-50%, -50%) scale(${lerp(0.85, 1, scaleT)})`;
+      // Dim underlying counters
+      cur.style.opacity = 1 - fade * 0.65;
+      ger.style.opacity = 1 - fade * 0.65;
+    } else {
+      card.style.opacity = 0;
+      cur.style.opacity = 1;
+      ger.style.opacity = 1;
+    }
+  }
+
+  // ----- SHOT 6: PAYOFF -----
+  if (active === 'shot6') {
+    document.querySelector('.s6-headline').style.opacity = fadeIn(frame, BEATS.s6_headline, 10);
+    document.querySelector('.s6-sub').style.opacity = fadeIn(frame, BEATS.s6_sub, 8);
+    document.querySelector('.s6-cta-band').style.opacity = fadeIn(frame, BEATS.s6_cta, 8);
+  }
+};
+
+window.renderFrame(0);
+</script>
+</body>
+</html>

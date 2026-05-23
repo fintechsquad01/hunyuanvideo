@@ -9,6 +9,9 @@ media/
 
 # Playwright frame caches
 benchmarks/_d3_frames/
+pieces/*/_frames/
+pieces/*/_silent.mp4
+pieces/*/_audio.wav
 
 # Remotion deps
 benchmarks/remotion/node_modules/
