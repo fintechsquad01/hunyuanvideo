@@ -1,0 +1,35 @@
+{
+  "_notes": "World Cup 2026 — 12 groups of 4. Update with the actual FIFA group draw (December 5, 2025). Below is a *plausible placeholder* organized by FIFA seeding pots; replace with real groups before any group-specific content goes live.",
+  "format": {
+    "groups_count": 12,
+    "teams_per_group": 4,
+    "advance_per_group": 2,
+    "best_third_places_advance": 8,
+    "knockout_teams": 32,
+    "total_matches": 104,
+    "dates": {
+      "kickoff": "2026-06-11",
+      "group_stage_end": "2026-06-27",
+      "round_of_32_start": "2026-06-28",
+      "round_of_16_start": "2026-07-04",
+      "quarterfinals_start": "2026-07-09",
+      "semifinals_start": "2026-07-14",
+      "third_place_match": "2026-07-18",
+      "final": "2026-07-19"
+    }
+  },
+  "groups": {
+    "A": ["MEX", "JPN", "DEN", "GHA"],
+    "B": ["CAN", "BEL", "MAR", "PER"],
+    "C": ["USA", "POR", "COL", "JOR"],
+    "D": ["ARG", "URU", "SUI", "EGY"],
+    "E": ["BRA", "ITA", "AUS", "QAT"],
+    "F": ["FRA", "POL", "TUN", "NZL"],
+    "G": ["ESP", "KOR", "ECU", "PAN"],
+    "H": ["ENG", "NED", "IRN", "UZB"],
+    "I": ["GER", "CRO", "SEN", "VEN"],
+    "J": ["POR", "TUR", "NGA", "CRC"],
+    "K": ["NED", "DEN", "ALG", "PAR"],
+    "L": ["AUT", "SCO", "WAL", "CIV"]
+  }
+}

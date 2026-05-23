@@ -1,0 +1,23 @@
+{
+  "_notes": "Manually update this from Polymarket (https://polymarket.com/event/2026-fifa-world-cup-winner-595) before each major content batch. last_updated should be timestamped so older renders can be tagged with their data vintage.",
+  "last_updated": "2026-05-23",
+  "source": "polymarket-fifa-world-cup-winner-595",
+  "winner_market": {
+    "FRA": 18.0,
+    "ESP": 17.0,
+    "ENG": 14.0,
+    "BRA": 12.0,
+    "ARG": 11.0,
+    "POR": 6.5,
+    "NED": 4.0,
+    "GER": 3.5,
+    "ITA": 2.5,
+    "BEL": 2.0,
+    "URU": 1.5,
+    "CRO": 1.2,
+    "USA": 1.0,
+    "MEX": 0.8,
+    "COL": 0.7,
+    "_other": 4.3
+  }
+}

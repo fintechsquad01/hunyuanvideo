@@ -1,0 +1,20 @@
+{
+  "id": "group_d_predictor",
+  "archetype": "marble_drop",
+  "duration": 13,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a1a0a",
+  "team_codes": ["ARG", "URU", "SUI", "EGY"],
+  "peg_rows": 14,
+  "peg_spacing": 110,
+  "gravity": 1800,
+  "marble_radius": 50,
+  "peg_radius": 10,
+  "bounce": 0.55,
+  "finish_y_pct": 0.93,
+  "overlay": {
+    "hook_text": "Group D — who's getting out?",
+    "cta_text": "Top 2 advance. Pick yours."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "hopium_spain",
+  "archetype": "ring_expansion",
+  "duration": 15,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a0a0a",
+  "ring_color": "#ffd700",
+  "ring_thickness": 18,
+  "ring_radius_start_pct": 0.45,
+  "ring_radius_end_pct": 0.95,
+  "ball_color": "#aa151b",
+  "ball_radius": 42,
+  "ball_speed": 1100,
+  "speed_gain_per_bounce": 1.008,
+  "melody": "ode_to_joy",
+  "counter": true,
+  "reveal_text": "ESPAÑA CAMPEONES",
+  "overlay": {
+    "hook_text": "If Spain wins it all.",
+    "cta_text": "Hopium maximum."
+  }
+}
