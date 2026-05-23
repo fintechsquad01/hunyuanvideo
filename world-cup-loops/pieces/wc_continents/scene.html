@@ -1,0 +1,318 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: 'Anton'; src: url('file:///home/user/hunyuanvideo/world-cup-loops/design/project/fonts/Anton-Regular.ttf') format('truetype'); font-display: block; }
+@font-face { font-family: 'Roboto Condensed'; font-weight: 700; src: url('file:///home/user/hunyuanvideo/world-cup-loops/design/project/fonts/RobotoCondensed-Bold.ttf') format('truetype'); font-display: block; }
+@font-face { font-family: 'Inter'; font-weight: 700; src: url('file:///usr/share/fonts/opentype/inter/Inter-Bold.otf') format('opentype'); font-display: block; }
+@font-face { font-family: 'Inter'; font-weight: 600; src: url('file:///usr/share/fonts/opentype/inter/Inter-SemiBold.otf') format('opentype'); font-display: block; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; font-family: Inter, sans-serif; color: #fff; }
+body { background: linear-gradient(180deg, #0d2818 0%, #08180e 55%, #020a05 100%); position: relative; }
+
+.watermark { position: absolute; top: 28px; left: 28px; font-family: Inter; font-weight: 700; font-size: 28px; color: rgba(255,255,255,0.65); letter-spacing: -0.01em; z-index: 100; }
+.round-chip { position: absolute; top: 28px; right: 28px; font-family: 'Roboto Condensed'; font-weight: 700; font-size: 22px; color: #fff; letter-spacing: 0.1em; background: #0f9d58; padding: 10px 18px; border-radius: 999px; z-index: 100; }
+
+.hook-band { position: absolute; top: 90px; left: 0; right: 0; display: flex; justify-content: center; }
+.hook-text { background: rgba(0,0,0,0.65); padding: 18px 36px; font-family: Anton; font-size: 64px; color: #fff; letter-spacing: -0.02em; text-align: center; max-width: 1000px; line-height: 1.05; }
+
+.subhook { position: absolute; top: 220px; left: 0; right: 0; text-align: center; font-family: 'Roboto Condensed'; font-weight: 700; font-size: 28px; color: #8aa195; letter-spacing: 0.1em; }
+
+.cta-band { position: absolute; bottom: 0; left: 0; right: 0; height: 7%; background: rgba(0,0,0,0.78); display: flex; align-items: center; justify-content: center; }
+.cta-text { font-family: Anton; font-size: 52px; color: #ffd400; letter-spacing: -0.02em; }
+
+.chart { position: absolute; left: 0; right: 0; top: 280px; bottom: 220px; }
+svg.chart-svg { width: 100%; height: 100%; }
+
+.year-label { position: absolute; bottom: 0; font-family: 'Roboto Condensed'; font-weight: 700; font-size: 22px; color: #8aa195; letter-spacing: 0.05em; transform: translateX(-50%); }
+.marble-label {
+  position: absolute; transform: translate(-50%, -50%);
+  pointer-events: none;
+  display: flex; flex-direction: column; align-items: center;
+}
+.marble-circle {
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 3px solid rgba(255,255,255,0.85);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+  font-family: 'Anton'; color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  flex-shrink: 0;
+  letter-spacing: -0.02em;
+}
+.marble-count {
+  margin-top: 6px;
+  font-family: 'Roboto Condensed'; font-weight: 700; font-size: 16px;
+  color: rgba(255,255,255,0.75);
+  background: rgba(0,0,0,0.5);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.payoff { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; background: rgba(0,0,0,0.88); opacity: 0; padding: 0 48px; }
+.payoff.show { display: flex; }
+.payoff-eyebrow { font-family: 'Roboto Condensed'; font-weight: 700; font-size: 30px; color: #8aa195; letter-spacing: 0.15em; margin-bottom: 16px; }
+.payoff-title { font-family: Anton; font-size: 220px; color: #ffd400; letter-spacing: -0.04em; line-height: 0.92; margin-bottom: 8px; }
+.payoff-sub-num { font-family: Anton; font-size: 88px; color: #fff; letter-spacing: -0.02em; margin-bottom: 16px; }
+.payoff-twist { font-family: 'Inter'; font-weight: 700; font-size: 36px; color: #d9e6df; text-align: center; margin-bottom: 64px; max-width: 920px; line-height: 1.25; }
+.podium { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+.podium-row { display: flex; align-items: center; gap: 28px; font-family: Anton; }
+.podium-rank { font-size: 64px; color: #8aa195; letter-spacing: -0.02em; min-width: 70px; text-align: right; }
+.podium-rank.gold { color: #ffd400; }
+.podium-confed { font-size: 64px; color: #fff; letter-spacing: -0.02em; min-width: 280px; }
+.podium-gain { font-size: 52px; color: #1ac574; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+
+<div class="watermark">pitch.predict</div>
+<div class="round-chip" id="round-chip">WC 2026 · 8 YEARS OF ELO</div>
+
+<div class="hook-band" id="hook-band">
+  <div class="hook-text">WHICH CONTINENT ROSE MOST INTO WC 2026?</div>
+</div>
+<div class="subhook" id="subhook">2018 → 2026 · AVG ELO OF QUALIFIERS</div>
+
+<div class="chart">
+  <svg class="chart-svg" id="svg" viewBox="0 0 1080 1420" preserveAspectRatio="none"></svg>
+  <div id="year-labels"></div>
+  <div id="marbles"></div>
+</div>
+
+<div class="cta-band">
+  <div class="cta-text" id="cta-text">WHICH CONTINENT DID YOU EXPECT?</div>
+</div>
+
+<div class="payoff" id="payoff">
+  <div class="payoff-eyebrow">8-YEAR AVG ELO GAIN</div>
+  <div class="payoff-title">CONCACAF</div>
+  <div class="payoff-sub-num">+86</div>
+  <div class="payoff-twist">Bigger climb than Africa. Hosts + first-time qualifiers lifted the average.</div>
+  <div class="podium" id="podium"></div>
+</div>
+
+<script>
+const FPS = 30;
+const TOTAL = 540;  // 18s
+const INTRO_END = 30;
+const RACE_START = 30;
+const RACE_END = 440;
+const PAYOFF_START = 460;
+
+// Confederation meta (qualifier count drives marble size)
+const META = {
+  UEFA:     { color: '#3bcfff', name: 'UEFA',     count: 16, label: 'EUROPE' },
+  CAF:      { color: '#ff4d4d', name: 'CAF',      count: 10, label: 'AFRICA' },
+  AFC:      { color: '#ff8c1a', name: 'AFC',      count: 9,  label: 'ASIA' },
+  CONCACAF: { color: '#ffd400', name: 'CONCACAF', count: 6,  label: 'N./CTRL. AMERICA' },
+  CONMEBOL: { color: '#1ac574', name: 'CONMEBOL', count: 6,  label: 'S. AMERICA' },
+  OFC:      { color: '#c44dff', name: 'OFC',      count: 1,  label: 'OCEANIA' },
+};
+
+const W = 1080, H = 1420;
+const PADDING_L = 100, PADDING_R = 200, PADDING_T = 40, PADDING_B = 60;
+const CHART_W = W - PADDING_L - PADDING_R;
+const CHART_H = H - PADDING_T - PADDING_B;
+
+let MIN_ELO = Infinity, MAX_ELO = -Infinity;
+function computeBounds() {
+  for (const code in window.TRAJECTORIES) {
+    for (const p of window.TRAJECTORIES[code]) {
+      if (p.avg_elo < MIN_ELO) MIN_ELO = p.avg_elo;
+      if (p.avg_elo > MAX_ELO) MAX_ELO = p.avg_elo;
+    }
+  }
+  MIN_ELO = Math.floor((MIN_ELO - 80) / 50) * 50;
+  MAX_ELO = Math.ceil((MAX_ELO + 50) / 50) * 50;
+}
+
+function xFor(i, n) { return PADDING_L + (i / (n - 1)) * CHART_W; }
+function yFor(elo) {
+  const t = (elo - MIN_ELO) / (MAX_ELO - MIN_ELO);
+  return PADDING_T + (1 - t) * CHART_H;
+}
+
+function init() {
+  computeBounds();
+  const svg = document.getElementById('svg');
+  svg.innerHTML = '';
+
+  // Grid lines
+  for (let elo = MIN_ELO; elo <= MAX_ELO; elo += 100) {
+    const y = yFor(elo);
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', PADDING_L);
+    line.setAttribute('x2', W - PADDING_R);
+    line.setAttribute('y1', y);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', 'rgba(255,255,255,0.06)');
+    line.setAttribute('stroke-width', 1);
+    svg.appendChild(line);
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', PADDING_L - 8);
+    label.setAttribute('y', y + 6);
+    label.setAttribute('text-anchor', 'end');
+    label.setAttribute('fill', 'rgba(218,230,223,0.4)');
+    label.setAttribute('font-family', 'Roboto Condensed');
+    label.setAttribute('font-weight', '700');
+    label.setAttribute('font-size', '18');
+    label.textContent = String(elo);
+    svg.appendChild(label);
+  }
+
+  // Year labels
+  const labelsDiv = document.getElementById('year-labels');
+  labelsDiv.innerHTML = '';
+  const sample = Object.values(window.TRAJECTORIES)[0];
+  const yearSet = new Set();
+  for (let i = 0; i < sample.length; i++) {
+    const y = sample[i].date.slice(0, 4);
+    if (!yearSet.has(y) && parseInt(y) % 2 === 0) {
+      yearSet.add(y);
+      const el = document.createElement('div');
+      el.className = 'year-label';
+      el.style.left = `${(xFor(i, sample.length) / W) * 100}%`;
+      el.textContent = y;
+      labelsDiv.appendChild(el);
+    }
+  }
+
+  // Create path per confederation
+  for (const code in window.TRAJECTORIES) {
+    const m = META[code];
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('id', `path-${code}`);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', m.color);
+    path.setAttribute('stroke-width', 6);
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    path.setAttribute('opacity', 0.92);
+    path.setAttribute('filter', 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))');
+    svg.appendChild(path);
+  }
+
+  // Marble heads
+  const marblesDiv = document.getElementById('marbles');
+  marblesDiv.innerHTML = '';
+  for (const code in window.TRAJECTORIES) {
+    const m = META[code];
+    // Size based on qualifier count: OFC=1 → 38px, UEFA=16 → 100px
+    const size = 36 + Math.sqrt(m.count) * 14;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'marble-label';
+    wrapper.id = `marble-${code}`;
+    const circle = document.createElement('div');
+    circle.className = 'marble-circle';
+    circle.style.background = m.color;
+    circle.style.width = `${size}px`;
+    circle.style.height = `${size}px`;
+    circle.style.fontSize = `${Math.max(14, size * 0.28)}px`;
+    circle.textContent = m.name;
+    const count = document.createElement('div');
+    count.className = 'marble-count';
+    count.textContent = m.count === 1 ? '1 TEAM' : `${m.count} TEAMS`;
+    wrapper.appendChild(circle);
+    wrapper.appendChild(count);
+    marblesDiv.appendChild(wrapper);
+  }
+}
+
+function smoothPathD(points) {
+  if (points.length < 2) return '';
+  let d = `M ${points[0][0]} ${points[0][1]}`;
+  for (let i = 1; i < points.length; i++) {
+    d += ` L ${points[i][0]} ${points[i][1]}`;
+  }
+  return d;
+}
+
+window.renderFrame = function(frame) {
+  let progress;
+  if (frame < RACE_START) progress = 0;
+  else if (frame >= RACE_END) progress = 1;
+  else progress = (frame - RACE_START) / (RACE_END - RACE_START);
+  progress = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+  for (const code in window.TRAJECTORIES) {
+    const traj = window.TRAJECTORIES[code];
+    const n = traj.length;
+    const idxFloat = progress * (n - 1);
+    const i = Math.floor(idxFloat);
+    const frac = idxFloat - i;
+    const points = [];
+    for (let k = 0; k <= i; k++) {
+      points.push([xFor(k, n), yFor(traj[k].avg_elo)]);
+    }
+    if (frac > 0 && i + 1 < n) {
+      const xNow = xFor(i, n) + frac * (xFor(i + 1, n) - xFor(i, n));
+      const eloNow = traj[i].avg_elo + frac * (traj[i + 1].avg_elo - traj[i].avg_elo);
+      points.push([xNow, yFor(eloNow)]);
+    }
+    document.getElementById(`path-${code}`).setAttribute('d', smoothPathD(points));
+
+    const lastPt = points[points.length - 1] || [PADDING_L, yFor(traj[0].avg_elo)];
+    const xPct = (lastPt[0] / W) * 100;
+    const yPct = (lastPt[1] / H) * 100;
+    const marble = document.getElementById(`marble-${code}`);
+    marble.style.left = `${xPct}%`;
+    marble.style.top = `${yPct}%`;
+  }
+
+  const hook = document.getElementById('hook-band');
+  const subhook = document.getElementById('subhook');
+  if (frame > 75) {
+    const fade = Math.max(0, 1 - (frame - 75) / 30);
+    hook.style.opacity = fade;
+    subhook.style.opacity = fade;
+  } else {
+    hook.style.opacity = 1;
+    subhook.style.opacity = 1;
+  }
+
+  const cta = document.querySelector('.cta-band');
+  cta.style.opacity = Math.min(1, Math.max(0, (frame - 30) / 20));
+
+  const payoff = document.getElementById('payoff');
+  if (frame >= PAYOFF_START) {
+    payoff.classList.add('show');
+    payoff.style.opacity = Math.min(1, (frame - PAYOFF_START) / 14);
+    if (!payoff.dataset.built) {
+      const podium = document.getElementById('podium');
+      podium.innerHTML = '';
+      const ranked = [
+        { code: 'CONCACAF', gain: 86 },
+        { code: 'CAF',      gain: 65 },
+        { code: 'OFC',      gain: 61 },
+        { code: 'AFC',      gain: 60 },
+        { code: 'CONMEBOL', gain: 57 },
+        { code: 'UEFA',     gain: 44 },
+      ];
+      ranked.forEach((row, i) => {
+        const div = document.createElement('div');
+        div.className = 'podium-row';
+        div.innerHTML = `
+          <div class="podium-rank ${i === 0 ? 'gold' : ''}">#${i + 1}</div>
+          <div class="podium-confed">${row.code}</div>
+          <div class="podium-gain">+${row.gain}</div>
+        `;
+        podium.appendChild(div);
+      });
+      payoff.dataset.built = '1';
+    }
+  } else {
+    payoff.classList.remove('show');
+    payoff.style.opacity = 0;
+  }
+};
+
+window.boot = function() {
+  init();
+  window.renderFrame(0);
+};
+</script>
+</body>
+</html>
