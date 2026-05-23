@@ -1,0 +1,15 @@
+{
+  "id": "bouncing_focus_01",
+  "archetype": "bouncing_spheres",
+  "duration": 12,
+  "fps": 30,
+  "resolution": [1080, 1920],
+  "background": "#0a0a14",
+  "palette": ["#ff3b3b", "#3b83ff", "#ffd93b", "#1dd3b0", "#c44dff"],
+  "difficulty": 3,
+  "audio": null,
+  "overlay": {
+    "hook_text": "Only 2% can follow the red ball.",
+    "cta_text": "Comment when you lose it 👇"
+  }
+}
