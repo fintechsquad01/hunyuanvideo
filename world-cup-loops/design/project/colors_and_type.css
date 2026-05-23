@@ -1,0 +1,238 @@
+/* pitch.predict — Design Tokens
+ * Football data visualization brand. Vertical 9:16 video chrome,
+ * social profile imagery, landing page, and (phase 2) mobile game.
+ * Voice: FiveThirtyEight rigor × ESPN morning-show pace.
+ *
+ * Type stack: Inter (hooks/body/CTA), Anton (display/winner),
+ * Bebas Neue (reveal banners), Roboto Condensed + Barlow Semi
+ * Condensed (numerics/scores/odds badges). All Google Fonts.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Anton&family=Bebas+Neue&family=Roboto+Condensed:wght@400;500;700&family=Barlow+Semi+Condensed:wght@500;600;700;800&display=swap");
+
+:root {
+  /* -------- BRAND COLORS -------- */
+  --pp-green:           #0f9d58;   /* pitch green — primary brand, "advance", logo */
+  --pp-green-deep:      #0a6e3d;   /* hover/press, dim pitch */
+  --pp-green-bright:    #1ac574;   /* glow/active, focus rings */
+  --pp-yellow:          #ffd400;   /* FIFA yellow — CTAs, winners, "goal" */
+  --pp-yellow-deep:     #d4ae00;
+  --pp-red:             #ff4d4d;   /* danger / eliminated / "out" */
+  --pp-red-deep:        #b82828;
+
+  /* -------- SURFACE (video & app backgrounds) -------- */
+  --pp-bg-top:          #0d2818;   /* gradient top — pitch derived */
+  --pp-bg-bottom:       #020a05;   /* gradient bottom — depth */
+  --pp-bg:              #0a1a14;   /* solid fallback */
+  --pp-bg-elev:         #11261b;   /* card / surface above bg */
+  --pp-bg-elev-2:       #173526;   /* hover surface */
+  --pp-overlay-band:    rgba(0,0,0,0.60);  /* hook + CTA bands */
+  --pp-overlay-strong:  rgba(0,0,0,0.78);  /* readability under busy bg */
+  --pp-overlay-soft:    rgba(0,0,0,0.32);
+
+  /* -------- TEXT -------- */
+  --pp-fg:              #ffffff;
+  --pp-fg-2:            #d9e6df;   /* secondary on dark */
+  --pp-fg-3:            #8aa195;   /* tertiary / labels */
+  --pp-fg-mute:         #5a6f64;   /* disabled, fine print */
+  --pp-fg-on-yellow:    #0a1a14;   /* black-green text on yellow CTA */
+
+  /* -------- LINES -------- */
+  --pp-line:            rgba(255,255,255,0.10);
+  --pp-line-strong:     rgba(255,255,255,0.22);
+  --pp-line-yellow:     #ffd400;
+
+  /* -------- BRAND GRADIENT (video background) -------- */
+  --pp-pitch-gradient:  linear-gradient(180deg, #0d2818 0%, #08180e 55%, #020a05 100%);
+  --pp-stinger-flash:   radial-gradient(circle at center, #1ac574 0%, #0f9d58 35%, #0a6e3d 100%);
+  --pp-winner-glow:     0 0 16px #ffd400, 0 0 36px rgba(255,212,0,0.55), 0 0 80px rgba(255,212,0,0.25);
+
+  /* -------- TYPE FAMILIES -------- */
+  --pp-ff-hook:    "Inter", "Helvetica Neue", Arial, sans-serif;     /* hooks, captions */
+  --pp-ff-display: "Anton", "Bebas Neue", Impact, sans-serif;        /* winner / reveal */
+  --pp-ff-reveal:  "Bebas Neue", "Anton", Impact, sans-serif;        /* banner */
+  --pp-ff-num:     "Roboto Condensed", "Barlow Semi Condensed", Arial, sans-serif; /* scores */
+  --pp-ff-num-alt: "Barlow Semi Condensed", "Roboto Condensed", Arial, sans-serif;
+  --pp-ff-body:    "Inter", "Helvetica Neue", Arial, sans-serif;     /* default */
+
+  /* -------- TYPE SCALE (designed for 9:16 video @ 1080×1920 AND web) -------- */
+  --pp-fs-hook-xl:  72px;   /* top-of-screen hook, single line */
+  --pp-fs-hook:     56px;   /* standard hook band */
+  --pp-fs-hook-sm: 40px;
+  --pp-fs-winner:  140px;   /* WINNER team name (Anton) */
+  --pp-fs-banner:   84px;   /* reveal banner (Bebas) */
+  --pp-fs-num-xl:   64px;   /* counter / score */
+  --pp-fs-num:      40px;
+  --pp-fs-badge:    28px;   /* odds badge / round indicator */
+  --pp-fs-body:     20px;
+  --pp-fs-caption:  16px;
+  --pp-fs-fine:     12px;
+
+  /* -------- TRACKING (always tight on display) -------- */
+  --pp-track-display: -0.02em;   /* Anton / Bebas / Inter Bold ALL-CAPS */
+  --pp-track-num:     -0.01em;
+  --pp-track-body:     0.00em;
+  --pp-track-fine:     0.04em;   /* tiny caps labels */
+
+  /* -------- SPACING (4px base, multiples of 4) -------- */
+  --pp-s-1:  4px;
+  --pp-s-2:  8px;
+  --pp-s-3:  12px;
+  --pp-s-4:  16px;
+  --pp-s-5:  20px;
+  --pp-s-6:  24px;
+  --pp-s-8:  32px;
+  --pp-s-10: 40px;
+  --pp-s-12: 48px;
+  --pp-s-16: 64px;
+  --pp-s-20: 80px;
+
+  /* Video chrome dimensions (% of 1080×1920) */
+  --pp-band-h: 7%;          /* hook + CTA bands */
+  --pp-watermark-pad: 24px;
+
+  /* -------- RADII -------- */
+  --pp-r-1: 2px;     /* badge corners — tight, broadcast-like */
+  --pp-r-2: 4px;
+  --pp-r-3: 8px;     /* cards */
+  --pp-r-4: 12px;    /* large cards */
+  --pp-r-pill: 999px;
+
+  /* -------- SHADOW / GLOW -------- */
+  --pp-shadow-1: 0 1px 0 rgba(0,0,0,0.4);
+  --pp-shadow-card: 0 4px 16px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.04) inset;
+  --pp-shadow-lift: 0 12px 32px rgba(0,0,0,0.55);
+  --pp-glow-yellow: 0 0 16px #ffd400, 0 0 36px rgba(255,212,0,0.55);
+  --pp-glow-green:  0 0 12px #0f9d58, 0 0 28px rgba(15,157,88,0.40);
+  --pp-glow-red:    0 0 12px #ff4d4d;
+
+  /* -------- MOTION -------- */
+  --pp-ease-out: cubic-bezier(0.16, 1, 0.3, 1);     /* standard exits */
+  --pp-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* icon bounce-in */
+  --pp-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --pp-d-fast:  120ms;
+  --pp-d-base:  240ms;
+  --pp-d-stinger-in:  500ms;  /* 0.5s intro */
+  --pp-d-stinger-out: 600ms;  /* 0.6s outro */
+}
+
+/* ----------------------------------------------------------
+ * SEMANTIC ELEMENT STYLES
+ * Apply by adding the class or using these as a recipe.
+ * ---------------------------------------------------------- */
+
+/* Hook (top of video, also page H1) */
+.pp-hook,
+h1.pp {
+  font-family: var(--pp-ff-hook);
+  font-weight: 800;
+  font-size: var(--pp-fs-hook);
+  letter-spacing: var(--pp-track-display);
+  line-height: 1.02;
+  color: var(--pp-fg);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* Winner-style display (Anton) */
+.pp-winner,
+h2.pp {
+  font-family: var(--pp-ff-display);
+  font-weight: 400;       /* Anton has one weight */
+  font-size: var(--pp-fs-winner);
+  letter-spacing: var(--pp-track-display);
+  line-height: 0.92;
+  color: var(--pp-fg);
+  text-transform: uppercase;
+  text-shadow: var(--pp-winner-glow);
+}
+
+/* Reveal banner (Bebas) */
+.pp-banner {
+  font-family: var(--pp-ff-reveal);
+  font-weight: 400;
+  font-size: var(--pp-fs-banner);
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+  color: var(--pp-fg);
+  text-transform: uppercase;
+}
+
+/* Numerics — counters, scores, odds */
+.pp-num {
+  font-family: var(--pp-ff-num);
+  font-weight: 700;
+  font-size: var(--pp-fs-num);
+  letter-spacing: var(--pp-track-num);
+  font-variant-numeric: tabular-nums;
+  color: var(--pp-fg);
+}
+
+/* Badge (odds / round indicator) */
+.pp-badge {
+  font-family: var(--pp-ff-num);
+  font-weight: 700;
+  font-size: var(--pp-fs-badge);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--pp-fg);
+}
+
+/* Body / caption / fine */
+.pp-body,
+p.pp {
+  font-family: var(--pp-ff-body);
+  font-weight: 500;
+  font-size: var(--pp-fs-body);
+  line-height: 1.4;
+  color: var(--pp-fg-2);
+  letter-spacing: var(--pp-track-body);
+}
+
+.pp-caption {
+  font-family: var(--pp-ff-body);
+  font-weight: 600;
+  font-size: var(--pp-fs-caption);
+  color: var(--pp-fg-3);
+  line-height: 1.35;
+}
+
+.pp-fine {
+  font-family: var(--pp-ff-body);
+  font-weight: 500;
+  font-size: var(--pp-fs-fine);
+  letter-spacing: var(--pp-track-fine);
+  text-transform: uppercase;
+  color: var(--pp-fg-3);
+}
+
+/* CTAs */
+.pp-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pp-s-2);
+  padding: 14px 22px;
+  font-family: var(--pp-ff-body);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  background: var(--pp-yellow);
+  color: var(--pp-fg-on-yellow);
+  border: 0;
+  border-radius: var(--pp-r-2);
+  cursor: pointer;
+  transition: transform var(--pp-d-fast) var(--pp-ease-out),
+              filter var(--pp-d-fast) linear,
+              box-shadow var(--pp-d-fast) linear;
+}
+.pp-cta:hover { filter: brightness(1.08); box-shadow: var(--pp-glow-yellow); }
+.pp-cta:active { transform: translateY(1px) scale(0.99); }
+
+.pp-cta--ghost {
+  background: transparent;
+  color: var(--pp-fg);
+  border: 1.5px solid var(--pp-line-strong);
+}
+.pp-cta--ghost:hover { background: rgba(255,255,255,0.06); box-shadow: none; }

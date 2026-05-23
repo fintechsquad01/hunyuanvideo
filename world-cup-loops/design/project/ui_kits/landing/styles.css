@@ -1,0 +1,134 @@
+@import url("./colors_and_type.css");
+
+html, body { margin: 0; padding: 0; background: var(--pp-bg); color: var(--pp-fg); font-family: var(--pp-ff-body); }
+body { background: var(--pp-pitch-gradient) fixed; min-height: 100vh; }
+* { box-sizing: border-box; }
+
+/* ---------- Layout ---------- */
+.lp-wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+
+/* ---------- Nav ---------- */
+.lp-nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--pp-line); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(8px); background: rgba(10,26,20,0.72); }
+.lp-nav-brand { display: flex; align-items: center; gap: 10px; }
+.lp-nav-brand img { height: 28px; width: auto; }
+.lp-nav-links { display: flex; gap: 24px; align-items: center; }
+.lp-nav-links a { font: 600 14px var(--pp-ff-body); letter-spacing: 0.04em; text-transform: uppercase; color: var(--pp-fg-2); text-decoration: none; transition: color 120ms var(--pp-ease-out); }
+.lp-nav-links a:hover { color: var(--pp-fg); }
+
+/* ---------- Hero ---------- */
+.lp-hero { padding: 80px 0 60px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+.lp-hero-eyebrow { font: 600 13px var(--pp-ff-num); letter-spacing: 0.16em; text-transform: uppercase; color: var(--pp-yellow); margin-bottom: 18px; display: inline-flex; align-items: center; gap: 8px; }
+.lp-hero-eyebrow .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--pp-red); box-shadow: 0 0 8px var(--pp-red); animation: lp-pulse 1.4s ease-in-out infinite; }
+@keyframes lp-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.lp-hero h1 { font-family: var(--pp-ff-display); font-size: 132px; font-weight: 400; line-height: 0.86; letter-spacing: -0.025em; text-transform: uppercase; margin: 0 0 24px; text-wrap: balance; }
+.lp-hero h1 .accent { color: var(--pp-yellow); }
+.lp-hero p { font: 500 22px/1.4 var(--pp-ff-body); color: var(--pp-fg-2); margin: 0 0 32px; text-wrap: pretty; max-width: 540px; }
+.lp-hero-cta-row { display: flex; gap: 12px; align-items: center; }
+.lp-hero-meta { display: flex; gap: 32px; margin-top: 40px; }
+.lp-hero-meta div { display: flex; flex-direction: column; gap: 2px; }
+.lp-hero-meta .num { font: 700 32px var(--pp-ff-num); letter-spacing: -0.01em; }
+.lp-hero-meta .lbl { font: 600 11px var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); }
+
+/* Hero reel preview — phone frame */
+.lp-reel { justify-self: center; }
+.lp-reel-bezel { position: relative; width: 320px; aspect-ratio: 9 / 16; background: #050706; border-radius: 36px; padding: 11px; box-shadow: 0 0 0 2px #1a1f1c, 0 30px 60px rgba(0,0,0,0.6), 0 0 0 6px #0c0f0d inset; }
+.lp-reel-vp { width: 100%; height: 100%; border-radius: 26px; overflow: hidden; background: var(--pp-pitch-gradient); position: relative; }
+.lp-reel-band-top { position: absolute; top: 0; left: 0; right: 0; height: 9%; background: rgba(0,0,0,0.6); display: flex; align-items: center; padding: 0 14px; }
+.lp-reel-band-top .h { font: 800 18px var(--pp-ff-hook); letter-spacing: -0.02em; text-transform: uppercase; line-height: 1; }
+.lp-reel-band-bot { position: absolute; bottom: 0; left: 0; right: 0; height: 8%; background: rgba(0,0,0,0.6); display: flex; align-items: center; padding: 0 14px; justify-content: space-between; }
+.lp-reel-band-bot .h { font: 700 14px var(--pp-ff-hook); letter-spacing: 0.02em; text-transform: uppercase; }
+.lp-reel-band-bot .f { font: 700 11px var(--pp-ff-num); letter-spacing: 0.10em; text-transform: uppercase; color: var(--pp-yellow); }
+.lp-reel-marble { position: absolute; width: 44px; height: 44px; will-change: transform; }
+.lp-reel-wm { position: absolute; top: 12%; left: 10px; width: 22px; opacity: 0.4; }
+.lp-reel-odds { position: absolute; top: 12%; right: 8px; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px; text-align: right; }
+.lp-reel-odds .lbl { font: 600 7px var(--pp-ff-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pp-fg-3); line-height: 1; }
+.lp-reel-odds .num { font: 700 18px var(--pp-ff-num); }
+.lp-reel-round { position: absolute; bottom: 13%; left: 10px; padding: 4px 10px; border-radius: 999px; background: rgba(0,0,0,0.6); font: 700 10px var(--pp-ff-num); letter-spacing: 0.10em; text-transform: uppercase; }
+
+/* ---------- Sections ---------- */
+.lp-section { padding: 80px 0; border-top: 1px solid var(--pp-line); }
+.lp-section-h { display: flex; justify-content: space-between; align-items: end; margin-bottom: 36px; gap: 24px; }
+.lp-section-h h2 { font-family: var(--pp-ff-display); font-size: 56px; font-weight: 400; line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; margin: 0; max-width: 600px; text-wrap: balance; }
+.lp-section-h .lp-eyebrow { font: 600 13px var(--pp-ff-num); letter-spacing: 0.16em; text-transform: uppercase; color: var(--pp-yellow); margin-bottom: 8px; }
+.lp-section-h p { font: 500 16px/1.45 var(--pp-ff-body); color: var(--pp-fg-3); margin: 0; max-width: 380px; }
+
+/* ---------- Race carousel ---------- */
+.lp-race-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.lp-race-card { background: var(--pp-bg-elev); border: 1px solid var(--pp-line); border-radius: 12px; overflow: hidden; box-shadow: var(--pp-shadow-card); transition: transform 240ms var(--pp-ease-out), border-color 240ms var(--pp-ease-out); cursor: pointer; }
+.lp-race-card:hover { transform: translateY(-3px); border-color: var(--pp-line-strong); }
+.lp-race-preview { aspect-ratio: 9 / 16; background: var(--pp-pitch-gradient); position: relative; overflow: hidden; }
+.lp-race-preview .marbles { position: absolute; inset: 0; }
+.lp-race-preview .marbles img { position: absolute; width: 40px; height: 40px; }
+.lp-race-preview .top-band { position: absolute; top: 0; left: 0; right: 0; height: 11%; background: rgba(0,0,0,0.6); display:flex; align-items:center; padding: 0 14px; font: 800 16px var(--pp-ff-hook); letter-spacing: -0.02em; text-transform: uppercase; line-height: 1; }
+.lp-race-preview .round { position: absolute; bottom: 14px; left: 14px; padding: 4px 10px; background: rgba(0,0,0,0.6); border-radius: 999px; font: 700 10px var(--pp-ff-num); letter-spacing: 0.10em; text-transform: uppercase; }
+.lp-race-meta { padding: 16px 18px; }
+.lp-race-meta .ttl { font: 700 18px var(--pp-ff-hook); text-transform: uppercase; letter-spacing: -0.01em; margin: 0 0 6px; }
+.lp-race-meta .sub { font: 500 13px var(--pp-ff-body); color: var(--pp-fg-3); }
+.lp-race-meta .stats { display: flex; gap: 18px; margin-top: 14px; }
+.lp-race-meta .stats div { display: flex; flex-direction: column; gap: 2px; }
+.lp-race-meta .stats .v { font: 700 18px var(--pp-ff-num); letter-spacing: -0.01em; }
+.lp-race-meta .stats .l { font: 600 10px var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); }
+
+/* ---------- Odds widget ---------- */
+.lp-odds { display: grid; grid-template-columns: 1fr 0.9fr; gap: 28px; }
+.lp-odds-card { background: var(--pp-bg-elev); border: 1px solid var(--pp-line); border-radius: 12px; padding: 24px; box-shadow: var(--pp-shadow-card); }
+.lp-odds-card h3 { font: 800 20px var(--pp-ff-hook); letter-spacing: -0.01em; text-transform: uppercase; margin: 0 0 18px; display: flex; justify-content: space-between; align-items: center; }
+.lp-odds-card .src { font: 600 11px var(--pp-ff-num); letter-spacing: 0.10em; color: var(--pp-fg-3); }
+.lp-odds-row { display: grid; grid-template-columns: 32px 1fr auto auto; gap: 14px; align-items: center; padding: 10px 0; border-top: 1px solid var(--pp-line); }
+.lp-odds-row:first-of-type { border-top: 0; }
+.lp-odds-row .swatch { width: 28px; height: 28px; border-radius: 6px; }
+.lp-odds-row .name { font: 700 16px var(--pp-ff-hook); letter-spacing: -0.01em; text-transform: uppercase; }
+.lp-odds-row .pm { font: 700 18px var(--pp-ff-num); letter-spacing: -0.01em; color: var(--pp-fg-2); }
+.lp-odds-row .pk { font: 700 18px var(--pp-ff-num); letter-spacing: -0.01em; color: var(--pp-yellow); width: 60px; text-align: right; }
+.lp-odds-bar { height: 6px; background: var(--pp-line); border-radius: 4px; overflow: hidden; margin-top: 14px; }
+.lp-odds-bar .fill { height: 100%; background: linear-gradient(90deg, var(--pp-green) 0%, var(--pp-yellow) 100%); }
+
+/* ---------- Format grid (WC1–WC8) ---------- */
+.lp-formats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.lp-format { background: var(--pp-bg-elev); border: 1px solid var(--pp-line); border-radius: 8px; padding: 18px; transition: border-color 240ms var(--pp-ease-out); cursor: pointer; min-height: 160px; display: flex; flex-direction: column; justify-content: space-between; }
+.lp-format:hover { border-color: var(--pp-green-bright); }
+.lp-format .code { font: 700 11px var(--pp-ff-num); letter-spacing: 0.16em; color: var(--pp-yellow); }
+.lp-format .ttl { font: 800 18px/1.05 var(--pp-ff-hook); text-transform: uppercase; letter-spacing: -0.01em; margin-top: 8px; text-wrap: balance; }
+.lp-format .sub { font: 500 13px/1.35 var(--pp-ff-body); color: var(--pp-fg-3); margin-top: 8px; }
+
+/* ---------- App + newsletter ---------- */
+.lp-app-strip { display: grid; grid-template-columns: 1.4fr 1fr; gap: 36px; align-items: center; background: linear-gradient(120deg, rgba(15,157,88,0.12) 0%, rgba(255,212,0,0.06) 100%); border: 1px solid var(--pp-line); border-radius: 16px; padding: 36px; }
+.lp-app-strip h2 { font-family: var(--pp-ff-display); font-size: 48px; font-weight: 400; line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; margin: 0 0 12px; text-wrap: balance; }
+.lp-app-strip p { font: 500 16px var(--pp-ff-body); color: var(--pp-fg-2); margin: 0 0 22px; max-width: 480px; }
+.lp-badge-row { display: flex; gap: 12px; }
+.lp-badge { background: #0a1a14; border: 1px solid var(--pp-line-strong); border-radius: 8px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; min-width: 160px; opacity: 0.7; cursor: not-allowed; }
+.lp-badge .glyph { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; color: var(--pp-fg-2); }
+.lp-badge .l1 { font: 600 9px var(--pp-ff-body); letter-spacing: 0.16em; text-transform: uppercase; color: var(--pp-fg-3); }
+.lp-badge .l2 { font: 700 15px var(--pp-ff-hook); letter-spacing: -0.01em; }
+
+.lp-newsletter { padding: 28px; background: var(--pp-bg-elev); border: 1px solid var(--pp-line); border-radius: 12px; }
+.lp-newsletter h3 { font: 800 20px var(--pp-ff-hook); text-transform: uppercase; letter-spacing: -0.01em; margin: 0 0 6px; }
+.lp-newsletter p { font: 500 14px var(--pp-ff-body); color: var(--pp-fg-3); margin: 0 0 16px; }
+.lp-form { display: flex; gap: 8px; }
+.lp-form input { flex: 1; background: var(--pp-bg); border: 1px solid var(--pp-line-strong); color: var(--pp-fg); padding: 12px 14px; font: 500 15px var(--pp-ff-body); border-radius: 4px; outline: none; transition: border-color 120ms; }
+.lp-form input:focus { border-color: var(--pp-green-bright); }
+
+/* ---------- Footer ---------- */
+.lp-footer { padding: 56px 0 40px; border-top: 1px solid var(--pp-line); margin-top: 48px; }
+.lp-footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 36px; }
+.lp-footer h4 { font: 700 12px var(--pp-ff-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pp-fg-3); margin: 0 0 14px; }
+.lp-footer a { display: block; font: 500 14px var(--pp-ff-body); color: var(--pp-fg-2); text-decoration: none; padding: 4px 0; }
+.lp-footer a:hover { color: var(--pp-fg); }
+.lp-footer-brand { display: flex; flex-direction: column; gap: 14px; }
+.lp-footer-brand img { height: 28px; width: auto; }
+.lp-footer-brand p { font: 500 13px var(--pp-ff-body); color: var(--pp-fg-3); margin: 0; max-width: 280px; }
+.lp-footer-bottom { display: flex; justify-content: space-between; padding-top: 28px; margin-top: 28px; border-top: 1px solid var(--pp-line); font: 500 12px var(--pp-ff-body); color: var(--pp-fg-mute); }
+
+/* responsive */
+@media (max-width: 980px) {
+  .lp-hero { grid-template-columns: 1fr; gap: 36px; padding: 56px 0; }
+  .lp-hero h1 { font-size: 80px; }
+  .lp-reel { order: -1; }
+  .lp-race-grid { grid-template-columns: 1fr; }
+  .lp-odds { grid-template-columns: 1fr; }
+  .lp-formats { grid-template-columns: repeat(2, 1fr); }
+  .lp-app-strip { grid-template-columns: 1fr; }
+  .lp-footer-grid { grid-template-columns: 1fr 1fr; }
+  .lp-section-h { flex-direction: column; align-items: flex-start; }
+  .lp-section-h h2 { font-size: 40px; }
+}

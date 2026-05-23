@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Numerics</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin:0; padding:0; background: var(--pp-bg); color: var(--pp-fg); font-family: var(--pp-ff-body); }
+  body { padding: 20px; box-sizing: border-box; }
+  .row { display: flex; gap: 12px; align-items: stretch; }
+  .col { display: flex; flex-direction: column; gap: 12px; }
+  .swatch { border-radius: 8px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; box-shadow: var(--pp-shadow-card); }
+  .swatch .name { font: 700 14px/1 var(--pp-ff-body); letter-spacing: 0.04em; text-transform: uppercase; }
+  .swatch .hex { font: 600 12px/1 var(--pp-ff-num); letter-spacing: 0.06em; opacity: 0.85; }
+  .swatch .role { font: 500 11px/1.25 var(--pp-ff-body); opacity: 0.75; margin-top: 8px; }
+  .pill { display:inline-flex; align-items:center; gap:6px; padding: 4px 10px; border-radius: 999px; font: 700 11px/1 var(--pp-ff-num); letter-spacing: 0.08em; text-transform: uppercase; }
+  .specimen { background: var(--pp-bg-elev); border-radius: 8px; padding: 18px; }
+  .label { font: 500 10px/1 var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); margin-bottom: 8px; }
+  .meta { font: 500 11px/1.2 var(--pp-ff-num); color: var(--pp-fg-3); margin-top: 6px; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+
+<div class="row" style="gap: 16px;">
+  <div class="specimen" style="flex:1;">
+    <div class="label">Score</div>
+    <div class="pp-num" style="font-size: 56px;">3–1</div>
+  </div>
+  <div class="specimen" style="flex:1;">
+    <div class="label">Counter</div>
+    <div class="pp-num" style="font-size: 56px;">18%</div>
+  </div>
+  <div class="specimen" style="flex:1;">
+    <div class="label">Round</div>
+    <div class="pp-num" style="font-size: 56px; letter-spacing: 0.04em;">R32</div>
+  </div>
+</div>
+<div class="meta">Roboto Condensed Bold · tabular-nums · -0.01em · scores, % odds, round indicators</div>
+</body></html>

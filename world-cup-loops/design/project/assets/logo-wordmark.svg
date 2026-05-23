@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 200">
+  
+  <text x="0" y="165" class="wm">PITCH</text>
+  <circle cx="495" cy="155" r="18" class="dot"></circle>
+  <text x="530" y="165" class="wm">PREDICT</text>
+</svg>

@@ -1,0 +1,321 @@
+/* pitch.predict Video Chrome kit
+ * 9:16 vertical stage at 1080×1920 native, scaled to fit.
+ */
+
+@import url("./colors_and_type.css");
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #060906;
+  color: var(--pp-fg);
+  font-family: var(--pp-ff-body);
+  overflow: hidden;
+}
+
+/* Outer stage: centers + scales the 9:16 viewport */
+.vc-stage {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  background: radial-gradient(ellipse at center, #0a1410 0%, #000 100%);
+}
+.vc-stage-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Phone bezel — proportional to native 1080×1920 + 60px bezel */
+.vc-bezel {
+  position: relative;
+  width: 360px;
+  aspect-ratio: 9 / 16;
+  background: #050706;
+  border-radius: 38px;
+  padding: 12px;
+  box-shadow:
+    0 0 0 2px #1a1f1c,
+    0 30px 60px rgba(0,0,0,0.6),
+    0 0 0 6px #0c0f0d inset;
+}
+.vc-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--pp-pitch-gradient);
+  isolation: isolate;
+}
+
+/* Native-scaled inner — everything inside uses 1080×1920 pixel units via percentages */
+.vc-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Chrome layers */
+.vc-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--pp-overlay-band);
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+  z-index: 50;
+}
+.vc-band--hook { top: 0; height: 9%; }
+.vc-band--cta  { bottom: 0; height: 8%; justify-content: space-between; }
+
+.vc-hook-text {
+  font-family: var(--pp-ff-hook);
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  text-transform: uppercase;
+  color: var(--pp-fg);
+  text-wrap: balance;
+}
+.vc-cta-text {
+  font-family: var(--pp-ff-hook);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--pp-fg);
+}
+.vc-cta-follow {
+  font-family: var(--pp-ff-num);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pp-yellow);
+}
+
+.vc-watermark {
+  position: absolute;
+  top: 11%;
+  left: 4%;
+  width: 28px;
+  height: 28px;
+  opacity: 0.40;
+  z-index: 40;
+}
+
+.vc-odds {
+  position: absolute;
+  top: 11%;
+  right: 4%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 40;
+}
+.vc-odds-chip {
+  background: var(--pp-overlay-band);
+  padding: 6px 10px;
+  border-radius: 4px;
+  text-align: right;
+  min-width: 70px;
+}
+.vc-odds-chip .lbl {
+  font-family: var(--pp-ff-body);
+  font-weight: 600;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pp-fg-3);
+  line-height: 1;
+}
+.vc-odds-chip .num {
+  font-family: var(--pp-ff-num);
+  font-weight: 700;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  color: var(--pp-fg);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+.vc-round {
+  position: absolute;
+  bottom: 12%;
+  left: 4%;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--pp-overlay-band);
+  font-family: var(--pp-ff-num);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--pp-fg);
+  z-index: 40;
+}
+.vc-round--final { background: var(--pp-yellow); color: var(--pp-fg-on-yellow); box-shadow: var(--pp-glow-yellow); }
+
+/* Lower third */
+.vc-lower-third {
+  position: absolute;
+  left: 0;
+  bottom: 24%;
+  background: linear-gradient(90deg, #11261b 0%, rgba(17,38,27,0) 100%);
+  border-left: 4px solid var(--pp-yellow);
+  padding: 12px 18px 12px 14px;
+  min-width: 60%;
+  z-index: 45;
+}
+.vc-lower-third .eyebrow {
+  font-family: var(--pp-ff-body);
+  font-weight: 600;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pp-yellow);
+  margin-bottom: 3px;
+}
+.vc-lower-third .title {
+  font-family: var(--pp-ff-hook);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* Winner banner */
+.vc-winner-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vc-winner-bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.85;
+}
+.vc-winner-card {
+  position: relative;
+  text-align: center;
+  padding: 0 6%;
+}
+.vc-winner-card .crown {
+  font-family: var(--pp-ff-reveal);
+  font-weight: 400;
+  font-size: 32px;
+  letter-spacing: 0.06em;
+  color: var(--pp-yellow);
+  text-shadow: 0 0 14px rgba(255,212,0,0.55);
+}
+.vc-winner-card .name {
+  font-family: var(--pp-ff-display);
+  font-size: 110px;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--pp-fg);
+  text-transform: uppercase;
+  text-shadow: var(--pp-winner-glow);
+  margin-top: 4px;
+}
+.vc-winner-card .sub {
+  font-family: var(--pp-ff-num);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--pp-fg-2);
+  margin-top: 14px;
+}
+
+/* Outro: wordmark fade */
+.vc-outro {
+  position: absolute;
+  inset: 0;
+  z-index: 55;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.vc-outro .mark { width: 70%; }
+.vc-outro .sub  { font: 700 14px var(--pp-ff-num); letter-spacing: 0.16em; text-transform: uppercase; color: var(--pp-fg-2); }
+
+/* Intro stinger still */
+.vc-stinger {
+  position: absolute;
+  inset: 0;
+  z-index: 70;
+  background: var(--pp-stinger-flash);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vc-stinger img { width: 38%; filter: drop-shadow(0 0 24px rgba(0,0,0,0.4)); }
+
+/* Marble stage (placeholder) */
+.vc-stage-marbles {
+  position: absolute;
+  inset: 11% 5% 16% 5%;
+  z-index: 10;
+}
+.vc-marble {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+}
+
+/* Nav (outside the bezel) */
+.vc-nav {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  background: #0a0f0d;
+  border-top: 1px solid #1c2522;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.vc-nav button {
+  background: transparent;
+  border: 1px solid var(--pp-line-strong);
+  color: var(--pp-fg-2);
+  padding: 8px 14px;
+  font: 600 12px var(--pp-ff-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 120ms var(--pp-ease-out);
+}
+.vc-nav button:hover { color: var(--pp-fg); border-color: var(--pp-green-bright); }
+.vc-nav button.active { background: var(--pp-yellow); color: var(--pp-fg-on-yellow); border-color: var(--pp-yellow); }
+
+.vc-frame-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 80;
+  background: rgba(0,0,0,0.4);
+  color: var(--pp-fg-3);
+  font: 600 10px var(--pp-ff-num);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  pointer-events: none;
+}

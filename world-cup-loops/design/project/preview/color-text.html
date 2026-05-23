@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Text on dark</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin:0; padding:0; background: var(--pp-bg); color: var(--pp-fg); font-family: var(--pp-ff-body); }
+  body { padding: 20px; box-sizing: border-box; }
+  .row { display: flex; gap: 12px; align-items: stretch; }
+  .col { display: flex; flex-direction: column; gap: 12px; }
+  .swatch { border-radius: 8px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; box-shadow: var(--pp-shadow-card); }
+  .swatch .name { font: 700 14px/1 var(--pp-ff-body); letter-spacing: 0.04em; text-transform: uppercase; }
+  .swatch .hex { font: 600 12px/1 var(--pp-ff-num); letter-spacing: 0.06em; opacity: 0.85; }
+  .swatch .role { font: 500 11px/1.25 var(--pp-ff-body); opacity: 0.75; margin-top: 8px; }
+  .pill { display:inline-flex; align-items:center; gap:6px; padding: 4px 10px; border-radius: 999px; font: 700 11px/1 var(--pp-ff-num); letter-spacing: 0.08em; text-transform: uppercase; }
+  .specimen { background: var(--pp-bg-elev); border-radius: 8px; padding: 18px; }
+  .label { font: 500 10px/1 var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); margin-bottom: 8px; }
+  .meta { font: 500 11px/1.2 var(--pp-ff-num); color: var(--pp-fg-3); margin-top: 6px; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+
+<div class="specimen" style="display:flex; flex-direction:column; gap: 10px; padding: 20px;">
+  <div style="color:#ffffff; font: 700 22px var(--pp-ff-body); letter-spacing:-0.01em;">Primary — #ffffff</div>
+  <div style="color:#d9e6df; font: 600 18px var(--pp-ff-body);">Secondary — #d9e6df</div>
+  <div style="color:#8aa195; font: 500 16px var(--pp-ff-body);">Tertiary / labels — #8aa195</div>
+  <div style="color:#5a6f64; font: 500 14px var(--pp-ff-body);">Disabled / fine print — #5a6f64</div>
+</div>
+</body></html>

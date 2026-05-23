@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Watermark</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin:0; padding:0; background: var(--pp-bg); color: var(--pp-fg); font-family: var(--pp-ff-body); }
+  body { padding: 20px; box-sizing: border-box; }
+  .row { display:flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .col { display:flex; flex-direction: column; gap: 14px; }
+  .meta { font: 500 11px/1.2 var(--pp-ff-num); color: var(--pp-fg-3); margin-top: 6px; letter-spacing: 0.04em; }
+  .label { font: 500 10px/1 var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div style="position: relative; height: 220px; background: var(--pp-pitch-gradient); border-radius: 8px; overflow: hidden;">
+  <img src="../assets/logo-icon.svg" width="56" height="56" style="position: absolute; top: 14px; left: 14px; opacity: 0.40;"/>
+  <div style="position: absolute; bottom: 16px; left: 0; right: 0; text-align: center;">
+    <span class="pp-fine" style="color: var(--pp-fg-3);">top-left · 40% opacity · 56px @ 1080w</span>
+  </div>
+  <div style="position: absolute; top: 0; right: 0; padding: 14px;">
+    <div style="background: var(--pp-overlay-band); padding: 6px 10px; border-radius: 4px;">
+      <span class="pp-num" style="font-size: 22px;">18%</span>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -38,11 +38,16 @@ from engines.python_numpy.marble_drop_pro import MarbleDropProEngine  # noqa: E4
 from engines.python_numpy.ring_expansion import RingExpansionEngine  # noqa: E402
 from overlays.text_overlay import apply_overlay  # noqa: E402
 
+# pitch.predict native engines (distinct namespace to avoid colliding with zen-loops/engines)
+sys.path.insert(0, str(REPO_ROOT))
+from wc_engines.elo_field import EloFieldEngine  # noqa: E402
+
 ENGINES = {
     "bouncing_spheres": BouncingSpheresEngine,
     "marble_drop": MarbleDropEngine,
     "marble_drop_pro": MarbleDropProEngine,
     "ring_expansion": RingExpansionEngine,
+    "elo_field": EloFieldEngine,
 }
 
 

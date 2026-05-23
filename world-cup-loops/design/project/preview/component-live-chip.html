@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Live status chips</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin:0; padding:0; background: var(--pp-bg); color: var(--pp-fg); font-family: var(--pp-ff-body); }
+  body { padding: 20px; box-sizing: border-box; }
+  .row { display:flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .col { display:flex; flex-direction: column; gap: 14px; }
+  .meta { font: 500 11px/1.2 var(--pp-ff-num); color: var(--pp-fg-3); margin-top: 6px; letter-spacing: 0.04em; }
+  .label { font: 500 10px/1 var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div class="row" style="gap: 10px;">
+  <span style="display:inline-flex; align-items:center; gap: 8px; background: var(--pp-overlay-band); padding: 8px 14px; border-radius: 999px;">
+    <span style="width: 8px; height: 8px; border-radius: 999px; background: var(--pp-red); box-shadow: 0 0 8px var(--pp-red);"></span>
+    <span class="pp-badge" style="font-size: 14px;">LIVE</span>
+  </span>
+  <span style="display:inline-flex; align-items:center; gap: 8px; background: var(--pp-overlay-band); padding: 8px 14px; border-radius: 999px;">
+    <span style="width: 8px; height: 8px; border-radius: 999px; background: var(--pp-green-bright); box-shadow: 0 0 8px var(--pp-green-bright);"></span>
+    <span class="pp-badge" style="font-size: 14px;">ADVANCED</span>
+  </span>
+  <span style="display:inline-flex; align-items:center; gap: 8px; background: var(--pp-overlay-band); padding: 8px 14px; border-radius: 999px;">
+    <span style="width: 8px; height: 8px; border-radius: 999px; background: var(--pp-red);"></span>
+    <span class="pp-badge" style="font-size: 14px; opacity:.85;">ELIMINATED</span>
+  </span>
+  <span style="display:inline-flex; align-items:center; gap: 8px; background: var(--pp-overlay-band); padding: 8px 14px; border-radius: 999px;">
+    <span class="pp-badge" style="font-size: 14px; color: var(--pp-yellow);">CHAMPIONS</span>
+  </span>
+</div>
+</body></html>

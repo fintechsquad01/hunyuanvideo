@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 240">
+  
+  
+  
+      <g transform="translate(20 36) scale(0.18)">
+        <path d="M 280 220 L 200 220 L 200 804 L 280 804" fill="none" stroke="#0a1a14" stroke-width="64" stroke-linecap="square"></path>
+        <path d="M 744 220 L 824 220 L 824 804 L 744 804" fill="none" stroke="#0a1a14" stroke-width="64" stroke-linecap="square"></path>
+        <circle cx="512" cy="512" r="170" fill="#0f9d58"></circle>
+        <ellipse cx="448" cy="448" rx="64" ry="44" fill="#ffffff" opacity="0.45"></ellipse>
+      </g>
+    
+  <text x="220" y="170" class="wm">PITCH</text>
+  <circle cx="654" cy="160" r="16" class="dot"></circle>
+  <text x="684" y="170" class="wm">PREDICT</text>
+</svg>

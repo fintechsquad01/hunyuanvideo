@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Round indicator</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin:0; padding:0; background: var(--pp-bg); color: var(--pp-fg); font-family: var(--pp-ff-body); }
+  body { padding: 20px; box-sizing: border-box; }
+  .row { display:flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .col { display:flex; flex-direction: column; gap: 14px; }
+  .meta { font: 500 11px/1.2 var(--pp-ff-num); color: var(--pp-fg-3); margin-top: 6px; letter-spacing: 0.04em; }
+  .label { font: 500 10px/1 var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div class="row" style="gap: 10px;">
+  
+    <span class="pp-badge" style="background: var(--pp-overlay-band); color: var(--pp-fg); padding: 8px 14px; border-radius: 999px; box-shadow: none;">R32</span>
+  
+    <span class="pp-badge" style="background: var(--pp-overlay-band); color: var(--pp-fg); padding: 8px 14px; border-radius: 999px; box-shadow: none;">R16</span>
+  
+    <span class="pp-badge" style="background: var(--pp-overlay-band); color: var(--pp-fg); padding: 8px 14px; border-radius: 999px; box-shadow: none;">QF</span>
+  
+    <span class="pp-badge" style="background: var(--pp-overlay-band); color: var(--pp-fg); padding: 8px 14px; border-radius: 999px; box-shadow: none;">SF</span>
+  
+    <span class="pp-badge" style="background: var(--pp-yellow); color: var(--pp-fg-on-yellow); padding: 8px 14px; border-radius: 999px; box-shadow: var(--pp-glow-yellow);">FINAL</span>
+  
+</div>
+<div class="meta">Bottom-left of every video. Sequence: R32 → R16 → QF → SF → FINAL (yellow + glow).</div>
+</body></html>

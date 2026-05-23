@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Type stack</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin:0; padding:0; background: var(--pp-bg); color: var(--pp-fg); font-family: var(--pp-ff-body); }
+  body { padding: 20px; box-sizing: border-box; }
+  .row { display: flex; gap: 12px; align-items: stretch; }
+  .col { display: flex; flex-direction: column; gap: 12px; }
+  .swatch { border-radius: 8px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px; box-shadow: var(--pp-shadow-card); }
+  .swatch .name { font: 700 14px/1 var(--pp-ff-body); letter-spacing: 0.04em; text-transform: uppercase; }
+  .swatch .hex { font: 600 12px/1 var(--pp-ff-num); letter-spacing: 0.06em; opacity: 0.85; }
+  .swatch .role { font: 500 11px/1.25 var(--pp-ff-body); opacity: 0.75; margin-top: 8px; }
+  .pill { display:inline-flex; align-items:center; gap:6px; padding: 4px 10px; border-radius: 999px; font: 700 11px/1 var(--pp-ff-num); letter-spacing: 0.08em; text-transform: uppercase; }
+  .specimen { background: var(--pp-bg-elev); border-radius: 8px; padding: 18px; }
+  .label { font: 500 10px/1 var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); margin-bottom: 8px; }
+  .meta { font: 500 11px/1.2 var(--pp-ff-num); color: var(--pp-fg-3); margin-top: 6px; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+
+<div class="col">
+  <div style="display:grid; grid-template-columns: 110px 1fr; gap: 8px 16px; align-items:baseline;">
+    <span class="label" style="margin:0;">HOOK</span>      <div style="font-family: var(--pp-ff-hook); font-weight:800; font-size: 32px; letter-spacing: -0.02em; text-transform: uppercase;">Inter Bold 800</div>
+    <span class="label" style="margin:0;">WINNER</span>    <div style="font-family: var(--pp-ff-display); font-size: 40px; letter-spacing: -0.02em;">Anton Regular</div>
+    <span class="label" style="margin:0;">BANNER</span>    <div style="font-family: var(--pp-ff-reveal); font-size: 36px; letter-spacing: 0.02em;">Bebas Neue</div>
+    <span class="label" style="margin:0;">NUMERIC</span>   <div style="font-family: var(--pp-ff-num); font-weight: 700; font-size: 28px;">Roboto Condensed 0123456789</div>
+    <span class="label" style="margin:0;">BODY</span>      <div style="font-family: var(--pp-ff-body); font-weight: 600; font-size: 22px;">Inter Semibold</div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Card surface</title>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html, body { margin:0; padding:0; background: var(--pp-bg); color: var(--pp-fg); font-family: var(--pp-ff-body); }
+  body { padding: 20px; box-sizing: border-box; }
+  .row { display:flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .col { display:flex; flex-direction: column; gap: 14px; }
+  .meta { font: 500 11px/1.2 var(--pp-ff-num); color: var(--pp-fg-3); margin-top: 6px; letter-spacing: 0.04em; }
+  .label { font: 500 10px/1 var(--pp-ff-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pp-fg-3); margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div style="background: var(--pp-pitch-gradient); padding: 18px; border-radius: 12px;">
+  <div style="background: var(--pp-bg-elev); border: 1px solid var(--pp-line); border-radius: 8px; padding: 18px; box-shadow: var(--pp-shadow-card); display: flex; gap: 14px; align-items: center;">
+    <img src="../assets/marble-esp.svg" width="64" height="64"/>
+    <div style="flex:1;">
+      <div class="pp-fine" style="color: var(--pp-fg-3);">PLINKO PREDICTION</div>
+      <div style="font: 700 22px/1.1 var(--pp-ff-hook); text-transform: uppercase; letter-spacing: -0.01em; margin: 4px 0 2px;">Spain · Round 32</div>
+      <div class="pp-caption">Survives 60% of simulations · refreshed 2h ago</div>
+    </div>
+    <div style="text-align: right;">
+      <div class="pp-num" style="font-size: 36px;">60<span style="font-size: 22px; opacity:.7;">%</span></div>
+    </div>
+  </div>
+</div>
+</body></html>

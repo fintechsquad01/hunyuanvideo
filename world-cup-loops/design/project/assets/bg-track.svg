@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="tk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d2818"></stop>
+      <stop offset="100%" stop-color="#020a05"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#tk)"></rect>
+  
+  <polygon points="1000,100 1040,100 1020,164" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="976,228 1016,228 996,292" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="1000,356 1040,356 1020,420" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="976,484 1016,484 996,548" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="1000,612 1040,612 1020,676" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="976,740 1016,740 996,804" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="1000,868 1040,868 1020,932" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="976,996 1016,996 996,1060" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="1000,1124 1040,1124 1020,1188" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="976,1252 1016,1252 996,1316" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="1000,1380 1040,1380 1020,1444" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="976,1508 1016,1508 996,1572" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="1000,1636 1040,1636 1020,1700" fill="rgba(255,255,255,0.08)"></polygon>
+  <polygon points="976,1764 1016,1764 996,1828" fill="rgba(255,255,255,0.08)"></polygon>
+  
+  <line x1="60" y1="960" x2="1020" y2="960" stroke="rgba(255,255,255,0.08)" stroke-width="2" stroke-dasharray="14 18"></line>
+</svg>

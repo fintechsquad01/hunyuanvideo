@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="pp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d2818"></stop>
+      <stop offset="55%" stop-color="#08180e"></stop>
+      <stop offset="100%" stop-color="#020a05"></stop>
+    </linearGradient>
+    <pattern id="stripes" x="0" y="0" width="1080" height="160" patternUnits="userSpaceOnUse">
+      <rect width="1080" height="80" fill="rgba(255,255,255,0.014)"></rect>
+    </pattern>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#pp)"></rect>
+  <rect width="1080" height="1920" fill="url(#stripes)"></rect>
+  
+  <radialGradient id="spot" cx="50%" cy="40%" r="60%">
+    <stop offset="0%" stop-color="rgba(255,255,255,0.06)"></stop>
+    <stop offset="100%" stop-color="rgba(255,255,255,0)"></stop>
+  </radialGradient>
+  <rect width="1080" height="1920" fill="url(#spot)"></rect>
+</svg>

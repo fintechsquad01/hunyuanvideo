@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#0a1a14"></stop>
+      <stop offset="100%" stop-color="#000000"></stop>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#vig)"></rect>
+  <circle cx="0" cy="0" r="0.6" fill="#ffffff" opacity="0.15"></circle>
+  <circle cx="629" cy="1219" r="1.1" fill="#ffffff" opacity="0.2"></circle>
+  <circle cx="178" cy="518" r="1.6" fill="#ffffff" opacity="0.25"></circle>
+  <circle cx="807" cy="1737" r="0.6" fill="#ffffff" opacity="0.30000000000000004"></circle>
+  <circle cx="356" cy="1036" r="1.1" fill="#ffffff" opacity="0.35"></circle>
+  <circle cx="985" cy="335" r="1.6" fill="#ffffff" opacity="0.15"></circle>
+  <circle cx="534" cy="1554" r="0.6" fill="#ffffff" opacity="0.2"></circle>
+  <circle cx="83" cy="853" r="1.1" fill="#ffffff" opacity="0.25"></circle>
+  <circle cx="712" cy="152" r="1.6" fill="#ffffff" opacity="0.30000000000000004"></circle>
+  <circle cx="261" cy="1371" r="0.6" fill="#ffffff" opacity="0.35"></circle>
+  <circle cx="890" cy="670" r="1.1" fill="#ffffff" opacity="0.15"></circle>
+  <circle cx="439" cy="1889" r="1.6" fill="#ffffff" opacity="0.2"></circle>
+  <circle cx="1068" cy="1188" r="0.6" fill="#ffffff" opacity="0.25"></circle>
+  <circle cx="617" cy="487" r="1.1" fill="#ffffff" opacity="0.30000000000000004"></circle>
+  <circle cx="166" cy="1706" r="1.6" fill="#ffffff" opacity="0.35"></circle>
+  <circle cx="795" cy="1005" r="0.6" fill="#ffffff" opacity="0.15"></circle>
+  <circle cx="344" cy="304" r="1.1" fill="#ffffff" opacity="0.2"></circle>
+  <circle cx="973" cy="1523" r="1.6" fill="#ffffff" opacity="0.25"></circle>
+  <circle cx="522" cy="822" r="0.6" fill="#ffffff" opacity="0.30000000000000004"></circle>
+  <circle cx="71" cy="121" r="1.1" fill="#ffffff" opacity="0.35"></circle>
+  <circle cx="700" cy="1340" r="1.6" fill="#ffffff" opacity="0.15"></circle>
+  <circle cx="249" cy="639" r="0.6" fill="#ffffff" opacity="0.2"></circle>
+  <circle cx="878" cy="1858" r="1.1" fill="#ffffff" opacity="0.25"></circle>
+  <circle cx="427" cy="1157" r="1.6" fill="#ffffff" opacity="0.30000000000000004"></circle>
+</svg>
