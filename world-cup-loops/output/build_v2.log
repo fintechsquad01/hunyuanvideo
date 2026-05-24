@@ -1,0 +1,16 @@
++ python pieces/wc_champions_pantheon/build_v2.py
+==> [1/5] Narration
+  no ELEVENLABS_API_KEY — silent WAV for: 'Every World Cup. Every champion.'
+  no ELEVENLABS_API_KEY — silent WAV for: 'Eight nations. Pick yours.'
+==> [2/5] Heroes (fal.ai backdrops + overlay)
+==> [3/5] Chart cascade
+  frame 0/420
+  frame 60/420
+  frame 120/420
+  frame 180/420
+  frame 240/420
+  frame 300/420
+  frame 360/420
+==> [4/5] Concat open + chart + close
+
+==> [5/5] Done: /home/runner/work/hunyuanvideo/hunyuanvideo/world-cup-loops/output/wc_champions_pantheon_v2.mp4 (0.88 MB)
