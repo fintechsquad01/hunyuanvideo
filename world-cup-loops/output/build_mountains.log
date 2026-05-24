@@ -1,0 +1,17 @@
++ python pieces/wc_mountains_2026/build.py
+==> [1/4] fal backdrop
+  [fal] no FAL_KEY — placeholder for wc_mountains_2026_backdrop.png
+==> [2/4] Silent render
+  frame 0/420
+  frame 60/420
+  frame 120/420
+  frame 180/420
+  frame 240/420
+  frame 300/420
+  frame 360/420
+==> [3/4] Audio: music bed + open/close narration
+  [tts] no key — silent WAV for 'Sixteen stadiums. Three countries. Two miles between top and bottom.'
+  [tts] no key — silent WAV for 'Welcome to the first tri-country World Cup.'
+==> [4/4] Mux
+
+✓ /home/runner/work/hunyuanvideo/hunyuanvideo/world-cup-loops/output/wc_mountains_2026.mp4 (490.0 KB)

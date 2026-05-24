@@ -1,0 +1,18 @@
++ python pieces/wc_predators_top_scorers/build.py
+==> [1/4] fal backdrop (lion at golden hour)
+  [fal] no FAL_KEY — placeholder for wc_predators_top_scorers_backdrop.png
+==> [2/4] Silent render
+  frame 0/450
+  frame 60/450
+  frame 120/450
+  frame 180/450
+  frame 240/450
+  frame 300/450
+  frame 360/450
+  frame 420/450
+==> [3/4] Audio
+  [tts] no key — silent WAV for 'Six predators. Six legends. One throne.'
+  [tts] no key — silent WAV for 'Klose by one. Who is your goat?'
+==> [4/4] Mux
+
+✓ /home/runner/work/hunyuanvideo/hunyuanvideo/world-cup-loops/output/wc_predators_top_scorers.mp4 (539.4 KB)
