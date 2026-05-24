@@ -1,0 +1,57 @@
+name: Build Turkey Composite
+
+on:
+  push:
+    branches: [claude/zenshapes-strategy-analysis-xZzbe]
+    paths:
+      - .github/workflows/build_turkey_composite.yml
+      - world-cup-loops/pieces/wc_turkey_dream/build_long_form.py
+      - world-cup-loops/pieces/wc_turkey_dream/audio_synth.py
+      - world-cup-loops/pieces/wc_turkey_dream/render_titles.py
+      - world-cup-loops/pieces/wc_turkey_dream/scenes.py
+      - world-cup-loops/pieces/wc_turkey_dream/download_scenes.sh
+      - world-cup-loops/pieces/wc_turkey_dream/job_urls.json
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/zenshapes-strategy-analysis-xZzbe
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Install Python deps
+        run: pip install --quiet pillow numpy scipy
+
+      - name: Download 12 scene MP4s from CloudFront
+        run: |
+          cd world-cup-loops
+          bash pieces/wc_turkey_dream/download_scenes.sh
+
+      - name: Run composite pipeline
+        run: |
+          cd world-cup-loops
+          python pieces/wc_turkey_dream/build_long_form.py
+
+      - name: Inspect output
+        run: |
+          ls -lh world-cup-loops/output/wc_turkey_dream.mp4
+          ffprobe -v error -show_format -show_streams world-cup-loops/output/wc_turkey_dream.mp4 | head -40
+
+      - name: Commit final MP4 back to branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add world-cup-loops/output/wc_turkey_dream.mp4
+          git diff --cached --quiet || git commit -m "Build wc_turkey_dream.mp4 via Actions [skip ci]"
+          git push origin claude/zenshapes-strategy-analysis-xZzbe
