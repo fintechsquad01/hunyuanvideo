@@ -1,0 +1,87 @@
+name: Build 3 Concepts (Mountains · H2H · Predators)
+
+on:
+  push:
+    branches: [claude/zenshapes-strategy-analysis-xZzbe]
+    paths:
+      - .github/workflows/build_three_concepts.yml
+      - world-cup-loops/pieces/_lib/**
+      - world-cup-loops/pieces/wc_mountains_2026/**
+      - world-cup-loops/pieces/wc_h2h_bra_arg/**
+      - world-cup-loops/pieces/wc_predators_top_scorers/**
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FAL_KEY: ${{ secrets.FAL_KEY }}
+      ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/zenshapes-strategy-analysis-xZzbe
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Install Python deps
+        run: pip install --quiet pillow numpy scipy fal-client
+
+      - name: Diagnose env (no secrets leaked)
+        run: |
+          echo "FAL_KEY set: $([ -n "$FAL_KEY" ] && echo yes || echo no)"
+          echo "ELEVENLABS_API_KEY set: $([ -n "$ELEVENLABS_API_KEY" ] && echo yes || echo no)"
+
+      - name: Build Mountains
+        id: mountains
+        continue-on-error: true
+        run: |
+          set -x
+          cd world-cup-loops
+          { python pieces/wc_mountains_2026/build.py; } 2>&1 | tee output/build_mountains.log
+
+      - name: Build H2H BRA vs ARG
+        id: h2h
+        continue-on-error: true
+        run: |
+          set -x
+          cd world-cup-loops
+          { python pieces/wc_h2h_bra_arg/build.py; } 2>&1 | tee output/build_h2h.log
+
+      - name: Build Predators
+        id: predators
+        continue-on-error: true
+        run: |
+          set -x
+          cd world-cup-loops
+          { python pieces/wc_predators_top_scorers/build.py; } 2>&1 | tee output/build_predators.log
+
+      - name: Commit outputs
+        if: always()
+        run: |
+          set -x
+          cd world-cup-loops
+          ls -lh output/ || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f output/build_mountains.log output/build_h2h.log output/build_predators.log || true
+          [ -f output/wc_mountains_2026.mp4 ] && git add -f output/wc_mountains_2026.mp4 || true
+          [ -f output/wc_h2h_bra_arg.mp4 ] && git add -f output/wc_h2h_bra_arg.mp4 || true
+          [ -f output/wc_predators_top_scorers.mp4 ] && git add -f output/wc_predators_top_scorers.mp4 || true
+          [ -f output/wc_mountains_2026_backdrop.png ] && git add -f output/wc_mountains_2026_backdrop.png || true
+          [ -f output/wc_h2h_bra_arg_backdrop.png ] && git add -f output/wc_h2h_bra_arg_backdrop.png || true
+          [ -f output/wc_predators_top_scorers_backdrop.png ] && git add -f output/wc_predators_top_scorers_backdrop.png || true
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "Actions: 3-concept build (Mountains/H2H/Predators) [skip ci]"
+            git push origin HEAD:claude/zenshapes-strategy-analysis-xZzbe
+          fi
