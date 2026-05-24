@@ -35,8 +35,9 @@ WINNERS: list[tuple[int, str]] = [
     (2022, "ARG"),
 ]
 
-# Display order (sorted by wins desc, then first-win year asc)
-COLUMNS: list[str] = ["BRA", "ITA", "GER", "ARG", "URU", "FRA", "ENG", "ESP"]
+# Display order — alphabetical so the column position doesn't telegraph the
+# answer. The viewer has to actually watch the cascade to see who's winning.
+COLUMNS: list[str] = ["ARG", "BRA", "ENG", "ESP", "FRA", "GER", "ITA", "URU"]
 
 
 def tally() -> dict[str, int]:

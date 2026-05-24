@@ -1,0 +1,65 @@
+name: Build WC Champions Pantheon (v2)
+
+on:
+  push:
+    branches: [claude/zenshapes-strategy-analysis-xZzbe]
+    paths:
+      - .github/workflows/build_wc_champions_pantheon.yml
+      - world-cup-loops/pieces/wc_champions_pantheon/**
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FAL_KEY: ${{ secrets.FAL_KEY }}
+      ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/zenshapes-strategy-analysis-xZzbe
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Install Python deps
+        run: pip install --quiet pillow numpy scipy fal-client
+
+      - name: Build v2 (heroes + chart + narration)
+        id: build
+        continue-on-error: true
+        run: |
+          set -x
+          cd world-cup-loops
+          mkdir -p output
+          { python pieces/wc_champions_pantheon/build_v2.py; } > output/build_v2.log 2>&1
+          echo "EXIT=$?"
+          cat output/build_v2.log
+
+      - name: Commit outputs (always, for debug)
+        if: always()
+        run: |
+          set -x
+          cd world-cup-loops
+          ls -lh output/ || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f output/build_v2.log || true
+          [ -f output/wc_champions_pantheon_v2.mp4 ] && git add -f output/wc_champions_pantheon_v2.mp4 || true
+          [ -f output/wc_champions_pantheon_heroes/hero_open.png ] && git add -f output/wc_champions_pantheon_heroes/hero_open.png || true
+          [ -f output/wc_champions_pantheon_heroes/hero_close.png ] && git add -f output/wc_champions_pantheon_heroes/hero_close.png || true
+          git status
+          git diff --cached --stat
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "Actions: wc_champions_pantheon v2 build [skip ci]"
+            git push origin HEAD:claude/zenshapes-strategy-analysis-xZzbe
+          fi

@@ -1,192 +1,232 @@
-"""Render the trophy-cascade animation frame-by-frame and pipe to ffmpeg.
+"""Render the trophy-cascade animation per the pitch.predict design system.
 
-Produces a silent 1080x1920 30fps MP4. Audio is muxed in by build.py.
+Uses brand fonts shipped in `world-cup-loops/design/project/fonts/`.
+Color tokens from `colors_and_type.css`.
 
-Pure Pillow + ffmpeg. No network, no AI in this layer — data is rendered
-deterministically per the pitch-predict brand contract.
+Output: silent 1080×1920 30fps MP4 at output/wc_champions_pantheon_silent.mp4.
 """
 
 from __future__ import annotations
 
-import math
 import subprocess
 import sys
 from pathlib import Path
-from typing import Iterator
 
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from data import WINNERS, COLUMNS, tally  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[2]
+FONT_DIR = ROOT / "design" / "project" / "fonts"
 
 # Canvas
 W, H = 1080, 1920
 FPS = 30
 
-# Timing (frame indices)
-HOOK_END = 60          # 0:00 – 0:02
-BUILD_END = 180        # 0:02 – 0:06   (6 drops, 1930–1958)
-CLIMB_END = 330        # 0:06 – 0:11   (16 drops, 1962–2022)
-PEAK_END = 390         # 0:11 – 0:13
-TOTAL = 420            # 0:14
+# Timing
+HOOK_END = 60
+BUILD_END = 180
+CLIMB_END = 330
+PEAK_END = 390
+TOTAL = 420
 
-# Layout
-TOP_BAND_H = 280
-COL_LABEL_BAND_H = 120
-PEAK_LABEL_BAND_H = 220
-CTA_BAND_H = 200
+# Color tokens (from colors_and_type.css)
+BG_TOP = (13, 40, 24)         # --pp-bg-top
+BG_MID = (8, 24, 14)          # --pp-bg-mid
+BG_BOTTOM = (2, 10, 5)        # --pp-bg-bottom
+GOLD = (255, 212, 0)          # --pp-yellow
+GOLD_DEEP = (212, 174, 0)     # --pp-yellow-deep
+GREEN_BRIGHT = (26, 197, 116) # --pp-green-bright
+RED = (255, 77, 77)           # --pp-red
+WHITE = (255, 255, 255)       # --pp-fg
+FG2 = (217, 230, 223)         # --pp-fg-2
+FG3 = (138, 161, 149)         # --pp-fg-3
+FG_MUTE = (90, 111, 100)      # --pp-fg-mute
+LINE = (255, 255, 255, 26)    # --pp-line (10%)
 
+# Per-country accent (their primary team color for the tally row)
+COUNTRY_ACCENT = {
+    "BRA": (253, 198, 17),
+    "ITA": (0, 142, 67),
+    "GER": (255, 200, 0),
+    "ARG": (108, 188, 222),
+    "URU": (88, 173, 255),
+    "FRA": (0, 75, 154),
+    "ENG": (255, 77, 77),
+    "ESP": (255, 77, 77),
+}
+
+# Type sizes (from --pp-fs-* in colors_and_type.css, scaled for content)
+FS_HOOK_XL = 72
+FS_HOOK = 56
+FS_WINNER = 140
+FS_BANNER = 84
+FS_NUM_XL = 64
+FS_NUM = 40
+FS_BADGE = 28
+FS_BODY = 22
+FS_FINE = 16
+
+# Layout (7% band top/bottom per --pp-band-h)
+BAND_TOP_H = int(H * 0.07)            # 134
+BAND_BOTTOM_H = int(H * 0.07)         # 134
+WATERMARK_PAD = 24
+
+# Column geometry
 N_COLS = 8
 COL_W = 100
-COL_GAP = 20
-COLS_TOTAL_W = N_COLS * COL_W + (N_COLS - 1) * COL_GAP   # 940
-COLS_X0 = (W - COLS_TOTAL_W) // 2                         # 70
+COL_GAP = 22
+COLS_TOTAL_W = N_COLS * COL_W + (N_COLS - 1) * COL_GAP   # 954
+COLS_X0 = (W - COLS_TOTAL_W) // 2                         # 63
+COL_TOP_Y = 300              # below year ticker
+COL_BASE_Y = 1500            # leave room for labels + bands
+COL_LABEL_Y = 1540           # country code (BRA, ITA, ...)
+COL_TALLY_Y = 1605           # number under code
+COL_SUBLABEL_Y = 1685        # "8 NATIONS · 22 TROPHIES"
 
 # Trophy glyph
-TROPHY_H = 64
-TROPHY_W = 56
-TROPHY_VGAP = 8
-
-# Colors
-BG_TOP = (13, 40, 24)
-BG_BOTTOM = (8, 24, 14)
-GOLD = (255, 212, 0)
-GOLD_DIM = (180, 145, 0)
-WHITE = (255, 255, 255)
-SECONDARY = (217, 230, 223)
-INACTIVE = (90, 106, 96)
-PITCH = (10, 70, 28)
+TROPHY_H = 70
+TROPHY_W = 60
+TROPHY_VGAP = 10
 
 
-def _load_font(size: int, kind: str = "bold") -> ImageFont.FreeTypeFont:
-    """Best-effort font loader. Anton/Inter aren't installed in most envs;
-    DejaVuSans-Bold + Condensed are the universal fallbacks."""
-    candidates_bold = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-    ]
-    candidates_cond = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSansNarrow-Bold.ttf",
-    ]
-    paths = candidates_cond if kind == "cond" else candidates_bold
-    for p in paths:
-        if Path(p).exists():
-            return ImageFont.truetype(p, size)
-    return ImageFont.load_default()
+# ----------------------- fonts -----------------------
 
+_FONT_CACHE: dict[tuple[str, int], ImageFont.FreeTypeFont] = {}
+
+
+def _font(family: str, size: int) -> ImageFont.FreeTypeFont:
+    """family in {anton, bebas, cond, cond_reg, inter_bold}."""
+    key = (family, size)
+    if key in _FONT_CACHE:
+        return _FONT_CACHE[key]
+    paths_by_family = {
+        "anton": [FONT_DIR / "Anton-Regular.ttf"],
+        "bebas": [FONT_DIR / "BebasNeue-Regular.ttf"],
+        "cond": [FONT_DIR / "RobotoCondensed-Bold.ttf"],
+        "cond_reg": [FONT_DIR / "RobotoCondensed.ttf"],
+        "inter_bold": [
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"),
+            Path("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"),
+        ],
+        "inter_med": [
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"),
+        ],
+    }
+    for p in paths_by_family.get(family, []):
+        if p.exists():
+            f = ImageFont.truetype(str(p), size)
+            _FONT_CACHE[key] = f
+            return f
+    f = ImageFont.load_default()
+    _FONT_CACHE[key] = f
+    return f
+
+
+# ----------------------- background -----------------------
 
 def _gradient_bg() -> Image.Image:
-    """Vertical gradient pitch background, generated once and reused."""
+    """3-stop vertical gradient per --pp-pitch-gradient."""
     bg = Image.new("RGB", (W, H), BG_TOP)
     px = bg.load()
+    mid_y = int(H * 0.55)
     for y in range(H):
-        t = y / (H - 1)
-        r = int(BG_TOP[0] * (1 - t) + BG_BOTTOM[0] * t)
-        g = int(BG_TOP[1] * (1 - t) + BG_BOTTOM[1] * t)
-        b = int(BG_TOP[2] * (1 - t) + BG_BOTTOM[2] * t)
+        if y <= mid_y:
+            t = y / mid_y
+            c1, c2 = BG_TOP, BG_MID
+        else:
+            t = (y - mid_y) / (H - mid_y - 1)
+            c1, c2 = BG_MID, BG_BOTTOM
+        r = int(c1[0] * (1 - t) + c2[0] * t)
+        g = int(c1[1] * (1 - t) + c2[1] * t)
+        b = int(c1[2] * (1 - t) + c2[2] * t)
         for x in range(W):
             px[x, y] = (r, g, b)
     return bg
 
 
+# ----------------------- helpers -----------------------
+
 def _col_center_x(i: int) -> int:
     return COLS_X0 + i * (COL_W + COL_GAP) + COL_W // 2
-
-
-def _col_base_y() -> int:
-    return H - CTA_BAND_H - COL_LABEL_BAND_H - 40
-
-
-def _col_top_y() -> int:
-    return TOP_BAND_H + 60
-
-
-def _draw_trophy(draw: ImageDraw.ImageDraw, cx: int, cy: int, scale: float = 1.0, glow: float = 0.0) -> None:
-    """Pillow-drawn gold trophy glyph (no FIFA mark)."""
-    w = int(TROPHY_W * scale)
-    h = int(TROPHY_H * scale)
-    color = GOLD
-    if glow > 0:
-        color = (255, min(255, 212 + int(43 * glow)), int(80 * glow))
-    # cup body (trapezoid)
-    cup_top = cy - h // 2 + int(h * 0.05)
-    cup_bot = cy + int(h * 0.18)
-    cup_top_w = int(w * 0.85)
-    cup_bot_w = int(w * 0.55)
-    draw.polygon(
-        [
-            (cx - cup_top_w // 2, cup_top),
-            (cx + cup_top_w // 2, cup_top),
-            (cx + cup_bot_w // 2, cup_bot),
-            (cx - cup_bot_w // 2, cup_bot),
-        ],
-        fill=color,
-    )
-    # handles (two arcs)
-    handle_y = cup_top + (cup_bot - cup_top) // 2
-    handle_r = int(w * 0.20)
-    draw.ellipse(
-        [cx - cup_top_w // 2 - handle_r, handle_y - handle_r // 2,
-         cx - cup_top_w // 2 + handle_r // 2, handle_y + handle_r // 2 + 2],
-        outline=color, width=max(2, int(3 * scale)),
-    )
-    draw.ellipse(
-        [cx + cup_top_w // 2 - handle_r // 2, handle_y - handle_r // 2,
-         cx + cup_top_w // 2 + handle_r, handle_y + handle_r // 2 + 2],
-        outline=color, width=max(2, int(3 * scale)),
-    )
-    # stem
-    stem_w = int(w * 0.18)
-    stem_top = cup_bot
-    stem_bot = cy + int(h * 0.32)
-    draw.rectangle([cx - stem_w // 2, stem_top, cx + stem_w // 2, stem_bot], fill=color)
-    # base
-    base_w = int(w * 0.65)
-    base_h = int(h * 0.10)
-    draw.rectangle([cx - base_w // 2, stem_bot, cx + base_w // 2, stem_bot + base_h], fill=color)
 
 
 def _draw_text_centered(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, cy: int, fill, cx: int = W // 2) -> None:
     bbox = draw.textbbox((0, 0), text, font=font)
     tw = bbox[2] - bbox[0]
     th = bbox[3] - bbox[1]
-    draw.text((cx - tw // 2, cy - th // 2), text, font=font, fill=fill)
+    # Pillow textbbox includes ascender padding; use (bbox[1]) to center on glyph baseline
+    draw.text((cx - tw // 2, cy - th // 2 - bbox[1]), text, font=font, fill=fill)
 
 
-def _drop_schedule() -> list[tuple[int, str, int]]:
-    """Return list of (frame_index_of_drop_start, country_code, drop_index_in_country).
+def _ease_out(t: float) -> float:
+    return 1 - (1 - t) ** 3
 
-    Distributes 22 trophy drops across BUILD (6) and CLIMB (16) windows.
-    """
-    schedule: list[tuple[int, str, int]] = []
-    seen: dict[str, int] = {}
-    # 6 drops across HOOK_END..BUILD_END (120 frames). One every 20 frames.
-    for idx, (year, code) in enumerate(WINNERS[:6]):
-        f = HOOK_END + idx * 20
-        seen[code] = seen.get(code, 0) + 1
-        schedule.append((f, code, seen[code]))
-    # 16 drops across BUILD_END..CLIMB_END (150 frames). One every 9.375 frames.
-    for idx, (year, code) in enumerate(WINNERS[6:]):
-        f = BUILD_END + int(idx * 150 / 16)
-        seen[code] = seen.get(code, 0) + 1
-        schedule.append((f, code, seen[code]))
-    return schedule
+
+def _ease_in_out(t: float) -> float:
+    return 0.5 - 0.5 * (1 - 2 * t) ** 3 if t < 0.5 else 0.5 + 0.5 * (2 * t - 1) ** 3
+
+
+def _draw_trophy(draw: ImageDraw.ImageDraw, cx: int, cy: int, scale: float = 1.0, glow: float = 0.0) -> None:
+    w = int(TROPHY_W * scale)
+    h = int(TROPHY_H * scale)
+    color = GOLD
+    if glow > 0:
+        color = (255, min(255, 212 + int(43 * glow)), min(255, int(80 * glow)))
+    cup_top = cy - h // 2 + int(h * 0.04)
+    cup_bot = cy + int(h * 0.18)
+    cup_top_w = int(w * 0.85)
+    cup_bot_w = int(w * 0.55)
+    draw.polygon(
+        [(cx - cup_top_w // 2, cup_top),
+         (cx + cup_top_w // 2, cup_top),
+         (cx + cup_bot_w // 2, cup_bot),
+         (cx - cup_bot_w // 2, cup_bot)],
+        fill=color,
+    )
+    handle_y = cup_top + (cup_bot - cup_top) // 2
+    handle_r = int(w * 0.22)
+    line_w = max(2, int(3 * scale))
+    draw.ellipse(
+        [cx - cup_top_w // 2 - handle_r, handle_y - handle_r // 2,
+         cx - cup_top_w // 2 + handle_r // 2, handle_y + handle_r // 2 + 2],
+        outline=color, width=line_w,
+    )
+    draw.ellipse(
+        [cx + cup_top_w // 2 - handle_r // 2, handle_y - handle_r // 2,
+         cx + cup_top_w // 2 + handle_r, handle_y + handle_r // 2 + 2],
+        outline=color, width=line_w,
+    )
+    stem_w = int(w * 0.18)
+    stem_top = cup_bot
+    stem_bot = cy + int(h * 0.34)
+    draw.rectangle([cx - stem_w // 2, stem_top, cx + stem_w // 2, stem_bot], fill=color)
+    base_w = int(w * 0.65)
+    base_h = int(h * 0.10)
+    draw.rectangle([cx - base_w // 2, stem_bot, cx + base_w // 2, stem_bot + base_h], fill=color)
+
+
+def _drop_schedule() -> list[tuple[int, str]]:
+    sched: list[tuple[int, str]] = []
+    for idx, (_, code) in enumerate(WINNERS[:6]):
+        sched.append((HOOK_END + idx * 20, code))
+    for idx, (_, code) in enumerate(WINNERS[6:]):
+        sched.append((BUILD_END + int(idx * 150 / 16), code))
+    return sched
 
 
 SCHEDULE = _drop_schedule()
 
 
 def _year_at(frame: int) -> str:
-    """The year ticker text at this frame."""
     if frame < HOOK_END:
         return "1930"
     if frame >= CLIMB_END:
         return "1930 — 2022"
-    # find latest drop year at or before this frame
     last_year = WINNERS[0][0]
-    for i, (drop_f, _, _) in enumerate(SCHEDULE):
+    for i, (drop_f, _) in enumerate(SCHEDULE):
         if drop_f <= frame:
             last_year = WINNERS[i][0]
         else:
@@ -194,128 +234,177 @@ def _year_at(frame: int) -> str:
     return str(last_year)
 
 
-def _trophy_state_at(frame: int) -> list[list[float]]:
-    """For each column, return a list of 'placed' float [0..1] for each trophy.
-    1.0 means fully placed. 0.0..1.0 means mid-drop animation (falling)."""
-    drop_anim_frames = 16  # how long a drop takes
+def _trophy_state_at(frame: int) -> dict[str, list[float]]:
     state: dict[str, list[float]] = {c: [] for c in COLUMNS}
-    for (drop_f, code, _) in SCHEDULE:
-        if frame < drop_f:
-            continue
-        progress = min(1.0, (frame - drop_f) / drop_anim_frames)
-        state[code].append(progress)
-    return [state[c] for c in COLUMNS]
+    anim = 22  # frames per drop including bounce
+    for (drop_f, code) in SCHEDULE:
+        if frame >= drop_f:
+            state[code].append(min(1.0, (frame - drop_f) / anim))
+    return state
+
+
+def _drop_curve(t: float) -> tuple[float, float]:
+    """Return (y_progress 0..1, scale_factor) for drop animation.
+
+    y_progress eases out with a small overshoot+settle for a bounce feel.
+    scale punches up briefly on impact then settles to 1.0.
+    """
+    if t < 0.65:
+        # Fall phase: ease out
+        u = t / 0.65
+        return (1 - (1 - u) ** 3, 0.85 + 0.10 * u)
+    elif t < 0.85:
+        # Overshoot phase: slight extra past the line
+        u = (t - 0.65) / 0.20
+        return (1.0 + 0.04 * (1 - u), 1.10 - 0.05 * u)
+    else:
+        # Settle to rest
+        u = (t - 0.85) / 0.15
+        return (1.0 + 0.04 * (1 - u) ** 2 - 0.04, 1.05 - 0.05 * u)
 
 
 def _first_seen_at(frame: int) -> set[str]:
-    """Set of country codes that have at least one trophy by this frame."""
-    seen = set()
-    for (drop_f, code, _) in SCHEDULE:
-        if frame >= drop_f:
-            seen.add(code)
-    return seen
+    return {code for (drop_f, code) in SCHEDULE if frame >= drop_f}
 
 
 def _glow_at(frame: int) -> dict[str, float]:
-    """Per-column glow intensity 0..1 for recent drops + sustained peak halo."""
     glow: dict[str, float] = {c: 0.0 for c in COLUMNS}
-    decay = 10  # frames
-    for (drop_f, code, _) in SCHEDULE:
+    decay = 14
+    # Recent-drop flash (any column)
+    for (drop_f, code) in SCHEDULE:
         if drop_f <= frame < drop_f + decay:
             glow[code] = max(glow[code], 1.0 - (frame - drop_f) / decay)
+    # First-time-winner extra brightness (sustained 18 frames)
+    seen_at: dict[str, int] = {}
+    for (drop_f, code) in SCHEDULE:
+        if code not in seen_at:
+            seen_at[code] = drop_f
+    first_decay = 22
+    for code, f0 in seen_at.items():
+        if f0 <= frame < f0 + first_decay:
+            glow[code] = max(glow[code], 0.85 - 0.4 * (frame - f0) / first_decay)
+    # PEAK halo on the actual leader (data-driven, not hard-coded)
     if frame >= CLIMB_END:
-        # Champion sustained halo
-        glow["BRA"] = max(glow["BRA"], 0.6)
+        leader = max(tally().items(), key=lambda kv: kv[1])[0]
+        # Pulsing halo, slow LFO so it breathes
+        import math
+        pulse = 0.55 + 0.20 * math.sin((frame - CLIMB_END) * 0.18)
+        glow[leader] = max(glow[leader], pulse)
     return glow
 
 
-def _ease_out(t: float) -> float:
-    return 1 - (1 - t) ** 3
+def _year_pulse(frame: int) -> float:
+    """0..1 scale pulse triggered on the most recent year change."""
+    decay = 8
+    for (drop_f, _) in SCHEDULE:
+        if drop_f <= frame < drop_f + decay:
+            return 1.0 - (frame - drop_f) / decay
+    return 0.0
 
+
+# ----------------------- frame render -----------------------
 
 def render_frame(frame: int, bg: Image.Image) -> Image.Image:
     img = bg.copy()
     draw = ImageDraw.Draw(img, "RGBA")
 
-    f_hook = _load_font(72, "bold")
-    f_year = _load_font(96, "cond")
-    f_col_label = _load_font(38, "cond")
-    f_tally_value = _load_font(40, "cond")
-    f_sub = _load_font(36, "bold")
-    f_cta = _load_font(64, "bold")
-    f_source = _load_font(24, "bold")
-    f_watermark = _load_font(24, "bold")
+    f_hook = _font("inter_bold", FS_HOOK)
+    f_year = _font("cond", FS_NUM_XL)
+    f_year_lock = _font("cond", FS_NUM)
+    f_col_label = _font("cond", 40)
+    f_tally_value = _font("cond", FS_NUM)
+    f_sublabel = _font("inter_bold", FS_BADGE)
+    f_cta = _font("anton", 76)
+    f_source = _font("inter_med", FS_FINE)
+    f_watermark = _font("inter_med", FS_FINE)
 
-    # --- top band: hook + year ticker ---
-    _draw_text_centered(draw, "WHO HAS WON IT MOST?", f_hook, cy=80, fill=WHITE)
-    # year ticker — fades in over hook, locks at peak
+    # --- top band (7% of H) ---
+    draw.rectangle([0, 0, W, BAND_TOP_H], fill=(0, 0, 0, 120))
+    _draw_text_centered(draw, "WHO HAS WON IT MOST?", f_hook, cy=BAND_TOP_H // 2, fill=WHITE)
+
+    # --- year ticker ---
+    year_cy = BAND_TOP_H + 80
     year_text = _year_at(frame)
-    year_alpha = 255 if frame >= 10 else int(255 * frame / 10)
-    _draw_text_centered(draw, year_text, f_year, cy=200, fill=(*SECONDARY, year_alpha)[:3])
+    if frame >= CLIMB_END:
+        # Locked range — render smaller and let "8 NATIONS · 22 TROPHIES" carry the eye
+        _draw_text_centered(draw, "1930 — 2022", f_year_lock, cy=year_cy, fill=FG2)
+    else:
+        # Scale-pulse on each year change for visible movement
+        pulse = _year_pulse(frame)
+        pulse_size = FS_NUM_XL + int(18 * pulse)
+        f_year_pulse = _font("cond", pulse_size)
+        _draw_text_centered(draw, year_text, f_year_pulse, cy=year_cy, fill=WHITE)
 
-    # --- columns ---
-    base_y = _col_base_y()
-    top_y = _col_top_y()
+    # --- columns + trophies ---
     states = _trophy_state_at(frame)
     seen = _first_seen_at(frame)
     glows = _glow_at(frame)
-    final_tally = tally()
 
     for i, code in enumerate(COLUMNS):
         cx = _col_center_x(i)
 
-        # Column guide line (thin pitch-marking)
-        draw.line([(cx, top_y + 40), (cx, base_y - 6)], fill=PITCH, width=2)
+        # Faint column guide line
+        draw.line([(cx, COL_TOP_Y + 30), (cx, COL_BASE_Y - 8)], fill=LINE, width=2)
 
-        # Column base label
-        label_color = WHITE if code in seen else INACTIVE
-        _draw_text_centered(draw, code, f_col_label, cy=base_y + 50, fill=label_color, cx=cx)
+        # Country code at the base
+        label_color = WHITE if code in seen else FG_MUTE
+        _draw_text_centered(draw, code, f_col_label, cy=COL_LABEL_Y, fill=label_color, cx=cx)
 
-        # Trophies
-        trophies = states[i]
+        # Trophies (placed bottom-up)
+        trophies = states[code]
         glow = glows[code]
         for ti, progress in enumerate(trophies):
-            placed_y = base_y - ti * (TROPHY_H + TROPHY_VGAP) - TROPHY_H // 2
-            # Falling animation: start from top_y, ease to placed_y
-            start_y = top_y
-            current_y = int(start_y + (placed_y - start_y) * _ease_out(progress))
-            scale = 0.85 + 0.15 * progress
-            _draw_trophy(draw, cx, current_y, scale=scale, glow=(glow if ti == len(trophies) - 1 else 0.0))
+            placed_y = COL_BASE_Y - ti * (TROPHY_H + TROPHY_VGAP) - TROPHY_H // 2
+            y_prog, drop_scale = _drop_curve(progress)
+            current_y = int(COL_TOP_Y + (placed_y - COL_TOP_Y) * y_prog)
+            is_top = ti == len(trophies) - 1
+            _draw_trophy(draw, cx, current_y, scale=drop_scale, glow=(glow if is_top else 0.0))
 
-    # --- peak label + final tally ---
+    # --- sub-label (only at peak) ---
     if frame >= CLIMB_END:
-        peak_progress = min(1.0, (frame - CLIMB_END) / 18)
-        sub_alpha = int(255 * peak_progress)
-        # "8 NATIONS. 22 TROPHIES." sub-label
-        _draw_text_centered(
-            draw, "8 NATIONS · 22 TROPHIES",
-            f_sub, cy=base_y + 130, fill=(*SECONDARY, sub_alpha)[:3],
+        prog = min(1.0, (frame - CLIMB_END) / 18)
+        alpha = int(255 * prog)
+        # Render through an RGBA layer so alpha actually applies
+        sub_layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        sub_draw = ImageDraw.Draw(sub_layer)
+        sub_draw.text(
+            ((W - sub_draw.textlength("8 NATIONS · 22 TROPHIES", font=f_sublabel)) // 2, COL_SUBLABEL_Y - FS_BADGE // 2),
+            "8 NATIONS · 22 TROPHIES",
+            font=f_sublabel,
+            fill=(*FG2, alpha),
         )
+        img = Image.alpha_composite(img.convert("RGBA"), sub_layer).convert("RGB")
+        draw = ImageDraw.Draw(img, "RGBA")
 
-    # Final tally row (only appears at peak)
+    # --- final tally row (numbers under codes) ---
     if frame >= CLIMB_END + 6:
-        prog = min(1.0, (frame - CLIMB_END - 6) / 18)
-        # render a left-to-right wipe by drawing tally items progressively
-        items = [(c, final_tally[c]) for c in COLUMNS]
-        # draw each item under its column
-        for i, (code, n) in enumerate(items):
+        prog = min(1.0, (frame - CLIMB_END - 6) / 22)
+        final_tally = tally()
+        for i, code in enumerate(COLUMNS):
             cx = _col_center_x(i)
-            # value below the country code
+            n = final_tally[code]
             value_color = GOLD if i == 0 else WHITE
-            value_alpha = int(255 * prog)
-            _draw_text_centered(
-                draw, str(n), f_tally_value, cy=base_y + 100, fill=(*value_color, value_alpha)[:3], cx=cx,
-            )
+            # progressive wipe left-to-right
+            if i / len(COLUMNS) > prog:
+                continue
+            _draw_text_centered(draw, str(n), f_tally_value, cy=COL_TALLY_Y, fill=value_color, cx=cx)
 
-    # --- CTA + source + watermark ---
+    # --- bottom band + CTA + source ---
     if frame >= PEAK_END - 6:
         prog = min(1.0, (frame - PEAK_END + 6) / 24)
         alpha = int(255 * prog)
-        _draw_text_centered(draw, "PICK YOUR CHAMPION", f_cta, cy=H - 110, fill=(*WHITE, alpha)[:3])
-        _draw_text_centered(draw, "Source: FIFA · 1930–2022", f_source, cy=H - 50, fill=(*SECONDARY, alpha)[:3])
+        # band
+        band_top_y = H - BAND_BOTTOM_H
+        band_layer = Image.new("RGBA", (W, BAND_BOTTOM_H), (0, 0, 0, int(160 * prog)))
+        img_rgba = img.convert("RGBA")
+        img_rgba.paste(band_layer, (0, band_top_y), band_layer)
+        img = img_rgba.convert("RGB")
+        draw = ImageDraw.Draw(img, "RGBA")
+        _draw_text_centered(draw, "PICK YOUR CHAMPION", f_cta, cy=H - BAND_BOTTOM_H // 2, fill=WHITE)
+        _draw_text_centered(draw, "Source: FIFA · 1930–2022", f_source, cy=H - BAND_BOTTOM_H - 26, fill=FG3)
 
-    # Watermark always on
-    draw.text((30, H - 50), "pitch.predict", font=f_watermark, fill=SECONDARY)
+    # --- watermark (always visible, bottom-left, in top band when CTA renders) ---
+    draw.text((WATERMARK_PAD, WATERMARK_PAD), "pitch.predict", font=f_watermark, fill=FG3)
 
     return img
 
@@ -323,7 +412,6 @@ def render_frame(frame: int, bg: Image.Image) -> Image.Image:
 def render_to_mp4(out_path: Path) -> Path:
     out_path.parent.mkdir(exist_ok=True, parents=True)
     bg = _gradient_bg()
-
     cmd = [
         "ffmpeg", "-y", "-loglevel", "error",
         "-f", "rawvideo", "-pix_fmt", "rgb24",
@@ -340,7 +428,7 @@ def render_to_mp4(out_path: Path) -> Path:
         for f in range(TOTAL):
             img = render_frame(f, bg)
             proc.stdin.write(img.tobytes())
-            if f % 30 == 0:
+            if f % 60 == 0:
                 print(f"  frame {f}/{TOTAL}", flush=True)
     finally:
         proc.stdin.close()
@@ -349,6 +437,6 @@ def render_to_mp4(out_path: Path) -> Path:
 
 
 if __name__ == "__main__":
-    out = Path(__file__).resolve().parents[2] / "output" / "wc_champions_pantheon_silent.mp4"
+    out = ROOT / "output" / "wc_champions_pantheon_silent.mp4"
     render_to_mp4(out)
     print(f"Wrote {out} ({out.stat().st_size / 1024:.1f} KB)")
