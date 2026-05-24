@@ -1,0 +1,234 @@
++ echo '=== ENV ==='
+=== ENV ===
++ uname -a
+Linux runnervmg397c 6.17.0-1013-azure #13~24.04.1-Ubuntu SMP Wed Apr 15 16:52:17 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
++ python3 --version
+Python 3.11.15
++ ffmpeg -version
++ head -1
+ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
++ echo
+
++ echo '=== DOWNLOAD ==='
+=== DOWNLOAD ===
++ bash pieces/wc_turkey_dream/download_scenes.sh
+↓ s05_cappadocia.mp4
+↓ s07b_unity.mp4
+↓ s08_baklava.mp4
+↓ s06_bosphorus.mp4
+↓ s04_dervish.mp4
+↓ s08b_simit.mp4
+↓ s02_goal.mp4
+↓ s10_wake.mp4
+↓ s01_calm.mp4
+↓ s09_taksim.mp4
+↓ s03_galata.mp4
+↓ s07_cats.mp4
+
+All 12 scenes downloaded to output/wc_turkey_raw/
+Now run: python pieces/wc_turkey_dream/build_long_form.py
++ echo
+
++ echo '=== RAW DIR ==='
+=== RAW DIR ===
++ ls -lh output/wc_turkey_raw/
+total 47M
+-rw-r--r-- 1 runner runner 2.3M May 24 14:22 s01_calm.mp4
+-rw-r--r-- 1 runner runner 4.7M May 24 14:22 s02_goal.mp4
+-rw-r--r-- 1 runner runner 7.3M May 24 14:22 s03_galata.mp4
+-rw-r--r-- 1 runner runner 3.0M May 24 14:22 s04_dervish.mp4
+-rw-r--r-- 1 runner runner 2.9M May 24 14:22 s05_cappadocia.mp4
+-rw-r--r-- 1 runner runner 5.0M May 24 14:22 s06_bosphorus.mp4
+-rw-r--r-- 1 runner runner 3.2M May 24 14:22 s07_cats.mp4
+-rw-r--r-- 1 runner runner 4.1M May 24 14:22 s07b_unity.mp4
+-rw-r--r-- 1 runner runner 2.4M May 24 14:22 s08_baklava.mp4
+-rw-r--r-- 1 runner runner 1.5M May 24 14:22 s08b_simit.mp4
+-rw-r--r-- 1 runner runner 7.7M May 24 14:22 s09_taksim.mp4
+-rw-r--r-- 1 runner runner 3.0M May 24 14:22 s10_wake.mp4
++ echo
+
++ echo '=== COMPOSITE ==='
+=== COMPOSITE ===
++ python pieces/wc_turkey_dream/build_long_form.py
+==> Loading URLs
+==> Rendering title cards locally
+==> Synthesizing audio bed
+==> Downloading scene MP4s
+==> Normalizing clips
+  ↻ t01_title.mp4
+  ↻ s01_calm.mp4
+  ↻ s02_goal.mp4
+  ↻ s03_galata.mp4
+  ↻ s04_dervish.mp4
+  ↻ s05_cappadocia.mp4
+  ↻ s06_bosphorus.mp4
+  ↻ s07b_unity.mp4
+  ↻ s08b_simit.mp4
+  ↻ s07_cats.mp4
+  ↻ s08_baklava.mp4
+  ↻ s09_taksim.mp4
+  ↻ s10_wake.mp4
+  ↻ t02_outro.mp4
+==> Concatenating video (hard cuts)
+==> Building final audio mix (synth bed + native hero audio)
+==> Muxing final video → wc_turkey_dream.mp4
+
+✓ /home/runner/work/hunyuanvideo/hunyuanvideo/world-cup-loops/output/wc_turkey_dream.mp4 (25.9 MB)
++ echo
+
++ echo '=== OUTPUT DIR ==='
+=== OUTPUT DIR ===
++ ls -lh output/
+total 59M
+-rw-r--r-- 1 runner runner 2.4K May 24 14:23 build.log
+-rw-r--r-- 1 runner runner 6.7M May 24 14:22 wc_turkey_audio_bed.wav
+-rw-r--r-- 1 runner runner 1.5K May 24 14:23 wc_turkey_concat.txt
+-rw-r--r-- 1 runner runner  25M May 24 14:23 wc_turkey_concat_video.mp4
+-rw-r--r-- 1 runner runner  26M May 24 14:23 wc_turkey_dream.mp4
+-rw-r--r-- 1 runner runner 1.6M May 24 14:23 wc_turkey_final_audio.m4a
+-rw-r--r-- 1 runner runner 160K May 24 14:23 wc_turkey_hero_audio_s06_bosphorus.m4a
+-rw-r--r-- 1 runner runner 179K May 24 14:23 wc_turkey_hero_audio_s09_taksim.m4a
+drwxr-xr-x 2 runner runner 4.0K May 24 14:23 wc_turkey_norm
+drwxr-xr-x 2 runner runner 4.0K May 24 14:22 wc_turkey_raw
+-rw-r--r-- 1 runner runner  27K May 24 14:22 wc_turkey_t01_title.mp4
+-rw-r--r-- 1 runner runner  26K May 24 14:22 wc_turkey_t01_title.png
+-rw-r--r-- 1 runner runner  26K May 24 14:22 wc_turkey_t02_outro.mp4
+-rw-r--r-- 1 runner runner  22K May 24 14:22 wc_turkey_t02_outro.png
++ echo
+
++ echo '=== FFPROBE ==='
+=== FFPROBE ===
++ ffprobe -v error -show_format -show_streams output/wc_turkey_dream.mp4
+[STREAM]
+index=0
+codec_name=h264
+codec_long_name=H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10
+profile=High
+codec_type=video
+codec_tag_string=avc1
+codec_tag=0x31637661
+width=768
+height=1344
+coded_width=768
+coded_height=1344
+closed_captions=0
+film_grain=0
+has_b_frames=2
+sample_aspect_ratio=N/A
+display_aspect_ratio=N/A
+pix_fmt=yuv420p
+level=40
+color_range=unknown
+color_space=unknown
+color_transfer=unknown
+color_primaries=unknown
+chroma_location=left
+field_order=progressive
+refs=1
+is_avc=true
+nal_length_size=4
+id=0x1
+r_frame_rate=30/1
+avg_frame_rate=47340/1579
+time_base=1/15360
+start_pts=0
+start_time=0.000000
+duration_ts=1212672
+duration=78.950000
+bit_rate=2582704
+max_bit_rate=N/A
+bits_per_raw_sample=8
+nb_frames=2367
+nb_read_frames=N/A
+nb_read_packets=N/A
+extradata_size=46
+DISPOSITION:default=1
+DISPOSITION:dub=0
+DISPOSITION:original=0
+DISPOSITION:comment=0
+DISPOSITION:lyrics=0
+DISPOSITION:karaoke=0
+DISPOSITION:forced=0
+DISPOSITION:hearing_impaired=0
+DISPOSITION:visual_impaired=0
+DISPOSITION:clean_effects=0
+DISPOSITION:attached_pic=0
+DISPOSITION:timed_thumbnails=0
+DISPOSITION:non_diegetic=0
+DISPOSITION:captions=0
+DISPOSITION:descriptions=0
+DISPOSITION:metadata=0
+DISPOSITION:dependent=0
+DISPOSITION:still_image=0
+TAG:language=und
+TAG:handler_name=VideoHandler
+TAG:vendor_id=[0][0][0][0]
+TAG:encoder=Lavc60.31.102 libx264
+[/STREAM]
+[STREAM]
+index=1
+codec_name=aac
+codec_long_name=AAC (Advanced Audio Coding)
+profile=LC
+codec_type=audio
+codec_tag_string=mp4a
+codec_tag=0x6134706d
+sample_fmt=fltp
+sample_rate=44100
+channels=1
+channel_layout=mono
+bits_per_sample=0
+initial_padding=0
+id=0x2
+r_frame_rate=0/0
+avg_frame_rate=0/0
+time_base=1/44100
+start_pts=0
+start_time=0.000000
+duration_ts=3483900
+duration=79.000000
+bit_rate=161453
+max_bit_rate=N/A
+bits_per_raw_sample=N/A
+nb_frames=3404
+nb_read_frames=N/A
+nb_read_packets=N/A
+extradata_size=5
+DISPOSITION:default=1
+DISPOSITION:dub=0
+DISPOSITION:original=0
+DISPOSITION:comment=0
+DISPOSITION:lyrics=0
+DISPOSITION:karaoke=0
+DISPOSITION:forced=0
+DISPOSITION:hearing_impaired=0
+DISPOSITION:visual_impaired=0
+DISPOSITION:clean_effects=0
+DISPOSITION:attached_pic=0
+DISPOSITION:timed_thumbnails=0
+DISPOSITION:non_diegetic=0
+DISPOSITION:captions=0
+DISPOSITION:descriptions=0
+DISPOSITION:metadata=0
+DISPOSITION:dependent=0
+DISPOSITION:still_image=0
+TAG:language=und
+TAG:handler_name=SoundHandler
+TAG:vendor_id=[0][0][0][0]
+[/STREAM]
+[FORMAT]
+filename=output/wc_turkey_dream.mp4
+nb_streams=2
+nb_programs=0
+format_name=mov,mp4,m4a,3gp,3g2,mj2
+format_long_name=QuickTime / MOV
+start_time=0.000000
+duration=79.000000
+size=27169842
+bit_rate=2751376
+probe_score=100
+TAG:major_brand=isom
+TAG:minor_version=512
+TAG:compatible_brands=isomiso2avc1mp41
+TAG:encoder=Lavf60.16.100
+[/FORMAT]
